@@ -6,7 +6,13 @@ import { CloseIcon } from "./close-icon"
 import Image from "next/image"
 
 type FormData = {
-  [key: string]: string | number | boolean;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  installationDate: string;
+  additionalNotes: string;
+  selectedSize?: string;
 };
 
 interface FormProps {
@@ -15,22 +21,23 @@ interface FormProps {
     title: string;
     description?: string;
     price?: string | number;
+    category?: string;
   }[]
   packageData?: {
-    id: string
-    title: string
-    description: string
-    price: string | number
-    financing?: string
-    sizes?: string[]
-    components?: string[]
-    src?: string
-    category?: string
-    image?: string
+    id: string;
+    title: string;
+    description: string;
+    price: string | number;
+    financing?: string;
+    sizes?: string[];
+    components?: string[];
+    src?: string;
+    category?: string;
+    image?: string;
   }
-  selectedSize?: string
-  onClose: () => void
-  formType: "package" | "custom"
+  selectedSize?: string;
+  onClose: () => void;
+  formType: "package" | "custom";
 }
 
 export default function UnifiedForm({ selectedItems = [], packageData, selectedSize, onClose, formType }: FormProps) {
@@ -63,7 +70,12 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
           ? typeof packageData?.price === "string"
             ? Number.parseFloat(packageData.price.replace(/,/g, ""))
             : packageData?.price || 0
-          : selectedItems.reduce((total, item) => total + (item.price || 0), 0);
+          : selectedItems.reduce((total, item) => {
+              const itemPrice = typeof item.price === "string" 
+                ? Number.parseFloat(item.price.replace(/,/g, ""))
+                : item.price || 0;
+              return total + itemPrice;
+            }, 0);
   
       // Type the request data
       interface EmailRequestData {
@@ -121,7 +133,12 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
       ? typeof packageData?.price === "string"
         ? Number.parseFloat(packageData.price.replace(/,/g, ""))
         : packageData?.price || 0
-      : selectedItems.reduce((total, item) => total + (item.price || 0), 0)
+      : selectedItems.reduce((total, item) => {
+          const itemPrice = typeof item.price === "string" 
+            ? Number.parseFloat(item.price.replace(/,/g, ""))
+            : item.price || 0;
+          return total + itemPrice;
+        }, 0);
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center overflow-auto bg-black/50 backdrop-blur-sm">
