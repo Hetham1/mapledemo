@@ -10,7 +10,12 @@ type FormData = {
 };
 
 interface FormProps {
-  selectedItems?: any[]
+  selectedItems?: {
+    id: string;
+    title: string;
+    description?: string;
+    price?: string | number;
+  }[]
   packageData?: {
     id: string
     title: string

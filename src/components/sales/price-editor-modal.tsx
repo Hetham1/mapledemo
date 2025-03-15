@@ -285,9 +285,16 @@ export default function PriceEditorModal({
   )
 }
 
+interface PriceItem {
+  id: string;
+  title: string;
+  description?: string;
+  price: number;
+}
+
 // Component for displaying a grid of price editors
 interface PriceEditorGridProps {
-  items: any[]
+  items: PriceItem[]
   categoryId: string
   prices: Record<string, number>
   onChange: (categoryId: string, itemId: string, value: string) => void

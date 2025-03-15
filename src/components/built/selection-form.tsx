@@ -14,11 +14,19 @@ interface FormData {
   additionalNotes: string
 }
 
+interface SelectedItem {
+  id: string;
+  title: string;
+  description?: string;
+  price?: number;
+  category?: string;
+}
+
 export default function SelectionForm({
   selectedItems,
   onClose,
 }: {
-  selectedItems: any[]
+  selectedItems: SelectedItem[]
   onClose: () => void
 }) {
   const [formData, setFormData] = useState<FormData>({

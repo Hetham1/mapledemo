@@ -113,13 +113,32 @@ function getColorClasses(color: string) {
   return colorMap[color] || colorMap.blue
 }
 
+interface Option {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  features?: string[];
+  sizes?: string[];
+  efficiency?: string;
+  type?: string;
+}
+
+interface Selection {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+}
+
 interface PackageBuilderProps {
   customPrices: Record<string, Record<string, number>> | null
 }
 
 export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
   const [currentStep, setCurrentStep] = useState(0)
-  const [selections, setSelections] = useState<Record<string, any>>({})
+  const [selections, setSelections] = useState<Record<string, Selection>>({})
   const [showSummary, setShowSummary] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [categories, setCategories] = useState(packageCategories)
@@ -153,10 +172,16 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
   const currentCategory = categories[currentStep]
   const currentColorClasses = getColorClasses(currentCategory.color)
 
-  const handleSelect = (option: any) => {
+  const handleSelect = (option: Option) => {
     setSelections({
       ...selections,
-      [currentCategory.id]: option,
+      [currentCategory.id]: {
+        id: option.id,
+        title: option.title,
+        description: option.description,
+        price: option.price,
+        category: currentCategory.id,
+      },
     })
   }
 
@@ -181,10 +206,10 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
   }
 
   const calculateTotal = () => {
-    return Object.values(selections).reduce((total: number, item: any) => total + (item.price || 0), 0)
+    return Object.values(selections).reduce((total: number, item: Selection) => total + (item.price || 0), 0)
   }
 
-  const isOptionSelected = (option: any) => {
+  const isOptionSelected = (option: Option) => {
     return selections[currentCategory?.id]?.id === option.id
   }
 

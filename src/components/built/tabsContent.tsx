@@ -2,6 +2,15 @@
 
 import { HoverEffect } from "../ui/card-hover-effect"
 
+interface TabItem {
+  id: string;
+  title: string;
+  description?: string;
+  price?: number;
+  category?: string;
+  link?: string;
+}
+
 // Update the component to accept items as a prop and selection handlers
 export default function CardHoverEffectDemo({
   items,
@@ -9,8 +18,8 @@ export default function CardHoverEffectDemo({
   selectedItems,
   tabName,
 }: {
-  items: any[]
-  onSelect?: (item: any, tabName: string) => void
+  items: TabItem[]
+  onSelect?: (item: TabItem) => void
   selectedItems?: string[]
   tabName: string
 }) {

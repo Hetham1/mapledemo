@@ -17,6 +17,26 @@ import {
   warrantyData,
 } from "@/lib/hvac-data"
 
+// Define proper interfaces for the data structure
+interface Option {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  features?: string[];
+  sizes?: string[];
+  efficiency?: string;
+  type?: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+  options: Option[];
+  color: string;
+}
+
 // Add proper type definitions at the top of the file
 type PackageData = {
   id: string;
@@ -135,7 +155,7 @@ export default function PackageBuilder() {
   const currentCategory = packageCategories[currentStep]
   const currentColorClasses = getColorClasses(currentCategory.color)
 
-  const handleSelect = (option: any) => {
+  const handleSelect = (option: Option) => {
     setSelections({
       ...selections,
       [currentCategory.id]: option,
@@ -166,7 +186,7 @@ export default function PackageBuilder() {
     return Object.values(selections).reduce((total: number, item: any) => total + (item.price || 0), 0)
   }
 
-  const isOptionSelected = (option: any) => {
+  const isOptionSelected = (option: Option) => {
     return selections[currentCategory?.id]?.id === option.id
   }
 

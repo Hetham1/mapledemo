@@ -243,13 +243,20 @@ const allItemsMap = {
   ...Object.fromEntries(warrantyData.map((item) => [item.id, { ...item, category: "Warranty" }])),
 }
 
+interface TabItem {
+  id: string;
+  title: string;
+  description?: string;
+  price?: number;
+}
+
 export default function TabsDemo() {
   // State to track selected items across all tabs
   const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [showForm, setShowForm] = useState(false)
 
   // Handle item selection
-  const handleSelectItem = (item: any, tabName: string) => {
+  const handleSelectItem = (item: TabItem) => {
     setSelectedItems((prev) => {
       // If already selected, remove it
       if (prev.includes(item.id)) {
@@ -276,7 +283,6 @@ export default function TabsDemo() {
             items={heatPumpData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
-            tabName="Heat Pump"
           />
         </div>
       ),
@@ -291,7 +297,6 @@ export default function TabsDemo() {
             items={furnaceData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
-            tabName="Furnace"
           />
         </div>
       ),
@@ -306,7 +311,6 @@ export default function TabsDemo() {
             items={thermostatData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
-            tabName="Thermostat"
           />
         </div>
       ),
@@ -321,7 +325,6 @@ export default function TabsDemo() {
             items={humidifierData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
-            tabName="Humidifier"
           />
         </div>
       ),
@@ -336,7 +339,6 @@ export default function TabsDemo() {
             items={airCleanerData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
-            tabName="Air Cleaner"
           />
         </div>
       ),
@@ -351,7 +353,6 @@ export default function TabsDemo() {
             items={warrantyData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
-            tabName="Warranty"
           />
         </div>
       ),
@@ -388,7 +389,7 @@ export default function TabsDemo() {
                     <p className="text-xs text-gray-500 dark:text-gray-400">{item.category}</p>
                   </div>
                   <button
-                    onClick={() => handleSelectItem(item, item.category)}
+                    onClick={() => handleSelectItem(item)}
                     className="h-6 w-6 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   >
                     ✕
