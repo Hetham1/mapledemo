@@ -3,6 +3,7 @@ import type React from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 const transition = {
   type: "spring",
@@ -103,9 +104,15 @@ export const ProductItem = ({
   )
 }
 
-export const HoveredLink = ({ children, ...rest }: any) => {
+interface HoveredLinkProps {
+  children: React.ReactNode;
+  href: string;
+  className?: string;
+}
+
+export const HoveredLink = ({ children, href, className }: HoveredLinkProps) => {
   return (
-    <Link {...rest} className="text-neutral-700 dark:text-neutral-200 hover:text-black ">
+    <Link href={href} className={cn("text-neutral-700 dark:text-neutral-200 hover:text-black", className)}>
       {children}
     </Link>
   )
