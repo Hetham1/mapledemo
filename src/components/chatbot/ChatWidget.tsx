@@ -1,90 +1,90 @@
-"use client"
+"use client";
 
-import type React from "react"
-import MarkdownIt from "markdown-it"
-import ChatTime from "@/lib/ChatTime"
-import { useState, useRef, useEffect } from "react"
-import { X, Minimize2, Maximize2, Send } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/chatbot/Input"
-import { cn } from "@/lib/utils"
+import type React from "react";
+import MarkdownIt from "markdown-it";
+import ChatTime from "@/lib/ChatTime";
+import { useState, useRef, useEffect } from "react";
+import { X, Minimize2, Maximize2, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/chatbot/Input";
+import { cn } from "@/lib/utils";
 
 type Message = {
-  role: "user" | "assistant"
-  content: string
-  timestamp?: string
-}
+  role: "user" | "assistant";
+  content: string;
+  timestamp?: string;
+};
 
 // Add isOpen and setIsOpen props to the component
 export default function ChatWidget({
   externalIsOpen,
   setExternalIsOpen,
 }: {
-  externalIsOpen?: boolean
-  setExternalIsOpen?: (isOpen: boolean) => void
+  externalIsOpen?: boolean;
+  setExternalIsOpen?: (isOpen: boolean) => void;
 }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isFullScreen, setIsFullScreen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
+  const [isOpen, setIsOpen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
   // => prop => suggestions array
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const md = new MarkdownIt({
     html: true,
     breaks: true,
-  })
+  });
 
   // Sync with external state if provided
   useEffect(() => {
     if (externalIsOpen !== undefined) {
-      setIsOpen(externalIsOpen)
+      setIsOpen(externalIsOpen);
     }
-  }, [externalIsOpen])
+  }, [externalIsOpen]);
 
   // Notify external state handler when internal state changes
   useEffect(() => {
     if (setExternalIsOpen) {
-      setExternalIsOpen(isOpen)
+      setExternalIsOpen(isOpen);
     }
-  }, [isOpen, setExternalIsOpen])
+  }, [isOpen, setExternalIsOpen]);
 
   // Scroll to bottom of messages
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages])
+  }, [messages]);
 
   // Focus input when chat opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
       setTimeout(() => {
-        inputRef.current?.focus()
-      }, 100)
+        inputRef.current?.focus();
+      }, 100);
     }
-  }, [isOpen, isFullScreen])
+  }, [isOpen, isFullScreen]);
 
   const handleToggleChat = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   const handleSwitchMode = () => {
-    setIsFullScreen(!isFullScreen)
-  }
+    setIsFullScreen(!isFullScreen);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
 
     const userMessage = {
       role: "user" as const,
       content: input,
-    }
-    setInput("")
-    setIsLoading(true)
-    setMessages((prev) => [...prev, userMessage])
+    };
+    setInput("");
+    setIsLoading(true);
+    setMessages((prev) => [...prev, userMessage]);
 
     try {
       const response = await fetch("/api/chat", {
@@ -96,9 +96,9 @@ export default function ChatWidget({
           message: input,
           chatHistory: messages,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok) {
         setMessages((prev) => [
@@ -108,7 +108,7 @@ export default function ChatWidget({
             content: data.response,
             timestamp: new Date().toISOString(),
           },
-        ])
+        ]);
       } else {
         setMessages((prev) => [
           ...prev,
@@ -116,22 +116,22 @@ export default function ChatWidget({
             role: "assistant",
             content: "Sorry, I encountered an error. Please try again later.",
           },
-        ])
-        console.error("Error:", data.error)
+        ]);
+        console.error("Error:", data.error);
       }
     } catch (error) {
-      console.error("Failed to send message:", error)
+      console.error("Failed to send message:", error);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
           content: "Sorry, I encountered an error. Please try again later.",
         },
-      ])
+      ]);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // Modify the button to be hidden on mobile
   if (!isOpen) {
@@ -150,19 +150,28 @@ export default function ChatWidget({
             stroke="currentColor"
             className="w-5 h-5"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 15l7-7 7 7"
+            />
           </svg>
         </div>
 
-        <span className="font-semibold text-sm p-1 w-20">Ask Any Questions!</span>
+        <span className="font-semibold text-sm p-1 w-20">
+          Ask Any Questions!
+        </span>
       </button>
-    )
+    );
   }
 
   return (
     <>
       {isFullScreen ? (
-        <div className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm" onClick={handleToggleChat} />
+        <div
+          className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm"
+          onClick={handleToggleChat}
+        />
       ) : (
         <div className="fixed inset-0 z-[9998]" onClick={handleToggleChat} />
       )}
@@ -172,7 +181,7 @@ export default function ChatWidget({
           "fixed z-[99999999999999999999999] flex flex-col bg-gray-50 shadow-xl transition-all duration-300",
           isFullScreen
             ? "inset-4 md:inset-10 lg:inset-20 rounded-xl"
-            : "bottom-6 right-6 h-[500px] w-[350px] rounded-lg ",
+            : "bottom-6 right-6 h-[500px] w-[350px] rounded-lg "
         )}
         onClick={(e) => e.stopPropagation()}
       >
@@ -180,7 +189,13 @@ export default function ChatWidget({
         <div className="flex items-center justify-between border-b border-slate-500 bg-black px-4 py-3 text-white rounded-t-md">
           <div className="flex items-center gap-2">
             <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20px"
+                height="20px"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -238,7 +253,13 @@ export default function ChatWidget({
                 viewBox="0 0 300 300"
                 className="mb-[-10px]"
               >
-                <path d="M90 235 Q150 265 210 235" stroke="#0056a4" strokeWidth="10" fill="none" strokeLinecap="round">
+                <path
+                  d="M90 235 Q150 265 210 235"
+                  stroke="#0056a4"
+                  strokeWidth="10"
+                  fill="none"
+                  strokeLinecap="round"
+                >
                   <animate
                     attributeName="d"
                     values="M90 235 Q150 265 210 235;M90 230 Q150 260 210 230;M90 235 Q150 265 210 235"
@@ -264,7 +285,7 @@ export default function ChatWidget({
                 <div
                   className={cn(
                     "overflow-hidden max-w-full pl-1 flex gap-1 items-center border-2 border-slate-900 bg-black text-white rounded-tl-md rounded-tr-md",
-                    isFullScreen ? "max-w-[65%]" : "max-w-[85%]",
+                    isFullScreen ? "max-w-[65%]" : "max-w-[85%]"
                   )}
                 >
                   <svg
@@ -296,12 +317,12 @@ export default function ChatWidget({
                   message.role === "user"
                     ? cn(
                         "ml-auto bg-slate-900 text-white break-words p-3 rounded-lg",
-                        isFullScreen ? "max-w-[40%]" : "max-w-[85%]",
+                        isFullScreen ? "max-w-[40%]" : "max-w-[85%]"
                       )
                     : cn(
-                        "mr-auto bg-gray-300 text-gray-900 break-words pl-3 pb-3 pr-3 rounded-bl-lg rounded-br-lg",
-                        isFullScreen ? "max-w-[65%]" : "max-w-[85%]",
-                      ),
+                        "mr-auto bg-gray-300 text-gray-900 break-words p-3 rounded-bl-lg rounded-br-lg",
+                        isFullScreen ? "max-w-[65%]" : "max-w-[85%]"
+                      )
                 )}
               >
                 <div
@@ -310,8 +331,8 @@ export default function ChatWidget({
                     message.role === "user"
                       ? cn("")
                       : cn(
-                          "                  [&>ul]:list-disc [&>ol]:list-decimal [&>ul]:ml-5 [&>ol]:ml-5 [&>li]:pl-2 [&>p]:font-semibold",
-                        ),
+                          "                  [&>ul]:list-disc [&>ol]:list-decimal [&>ul]:ml-5 [&>ol]:ml-5 [&>li]:pl-2 [&>p]:font-semibold"
+                        )
                   )}
                   dangerouslySetInnerHTML={{
                     __html: md.render(message.content),
@@ -348,13 +369,16 @@ export default function ChatWidget({
               className="flex-1"
               disabled={isLoading}
             />
-            <Button type="submit" disabled={isLoading || !input.trim()} className="bg-black hover:bg-slate-900">
+            <Button
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="bg-black hover:bg-slate-900"
+            >
               <Send size={18} />
             </Button>
           </div>
         </form>
       </div>
     </>
-  )
+  );
 }
-
