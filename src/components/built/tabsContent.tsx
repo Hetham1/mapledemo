@@ -1,15 +1,7 @@
 "use client"
 
 import { HoverEffect } from "../ui/card-hover-effect"
-
-interface TabItem {
-  id: string;
-  title: string;
-  description?: string;
-  price?: number;
-  category?: string;
-  link?: string;
-}
+import { TabItem } from "@/types"
 
 // Update the component to accept items as a prop and selection handlers
 export default function CardHoverEffectDemo({

@@ -249,7 +249,7 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
                         <div className="flex items-center gap-3">
                           <div className="h-16 w-16 relative rounded-lg overflow-hidden border shadow-sm">
                             <Image
-                              src={selection.image || "/placeholder.svg?height=64&width=64"}
+                              src={"/placeholder.svg?height=64&width=64"}
                               alt={selection.title}
                               fill
                               className="object-cover"

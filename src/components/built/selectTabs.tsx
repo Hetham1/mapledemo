@@ -4,8 +4,9 @@ import { useState } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs"
 import CardHoverEffectDemo from "./tabsContent"
 import SelectionForm from "./form-demo"
+import { TabItem } from "@/types"
 
-const heatPumpData = [
+const heatPumpData: TabItem[] = [
   {
     id: "2 Ton (14 SEER)",
     title: "2 Ton (14 SEER)",
@@ -44,7 +45,7 @@ const heatPumpData = [
   },
 ]
 
-const furnaceData = [
+const furnaceData: TabItem[] = [
   {
     id: "60,000 BTU",
     title: "60,000 BTU",
@@ -83,7 +84,7 @@ const furnaceData = [
   },
 ]
 
-const thermostatData = [
+const thermostatData: TabItem[] = [
   {
     id: "Basic",
     title: "Basic",
@@ -116,7 +117,7 @@ const thermostatData = [
   },
 ]
 
-const humidifierData = [
+const humidifierData: TabItem[] = [
   {
     id: "Basic",
     title: "Basic",
@@ -155,7 +156,7 @@ const humidifierData = [
   },
 ]
 
-const airCleanerData = [
+const airCleanerData: TabItem[] = [
   {
     id: "Standard Air Filter",
     title: "Standard Air Filter",
@@ -194,7 +195,7 @@ const airCleanerData = [
   },
 ]
 
-const warrantyData = [
+const warrantyData: TabItem[] = [
   {
     id: "5 Years",
     title: "5 Years",
@@ -241,13 +242,6 @@ const allItemsMap = {
   ...Object.fromEntries(humidifierData.map((item) => [item.id, { ...item, category: "Humidifier" }])),
   ...Object.fromEntries(airCleanerData.map((item) => [item.id, { ...item, category: "Air Cleaner" }])),
   ...Object.fromEntries(warrantyData.map((item) => [item.id, { ...item, category: "Warranty" }])),
-}
-
-interface TabItem {
-  id: string;
-  title: string;
-  description?: string;
-  price?: number;
 }
 
 export default function TabsDemo() {
