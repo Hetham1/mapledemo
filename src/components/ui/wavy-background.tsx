@@ -13,13 +13,6 @@ interface WavyBackgroundProps {
   blur?: number;
   speed?: "slow" | "fast";
   waveOpacity?: number;
-  position?: "relative" | "absolute";
-  style?: React.CSSProperties;
-}
-
-interface Point {
-  x: number;
-  y: number;
 }
 
 export const WavyBackground = ({
@@ -32,13 +25,13 @@ export const WavyBackground = ({
   blur = 10,
   speed = "fast",
   waveOpacity = 0.5,
-  position = "relative",
-  style,
   ...props
 }: WavyBackgroundProps) => {
   const noise = createNoise3D()
-  let w: number, h: number, nt: number, i: number, x: number, ctx: any, canvas: any
+  let w: number, h: number, nt: number, i: number, x: number
+  const ctx = useRef<CanvasRenderingContext2D | null>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  
   const getSpeed = () => {
     switch (speed) {
       case "slow":
@@ -51,16 +44,22 @@ export const WavyBackground = ({
   }
 
   const init = () => {
-    canvas = canvasRef.current
-    ctx = canvas.getContext("2d")
-    w = ctx.canvas.width = window.innerWidth
-    h = ctx.canvas.height = window.innerHeight
-    ctx.filter = `blur(${blur}px)`
+    const canvas = canvasRef.current
+    if (!canvas) return
+    
+    ctx.current = canvas.getContext("2d")
+    if (!ctx.current) return
+    
+    w = ctx.current.canvas.width = window.innerWidth
+    h = ctx.current.canvas.height = window.innerHeight
+    ctx.current.filter = `blur(${blur}px)`
     nt = 0
+    
     window.onresize = () => {
-      w = ctx.canvas.width = window.innerWidth
-      h = ctx.canvas.height = window.innerHeight
-      ctx.filter = `blur(${blur}px)`
+      if (!ctx.current) return
+      w = ctx.current.canvas.width = window.innerWidth
+      h = ctx.current.canvas.height = window.innerHeight
+      ctx.current.filter = `blur(${blur}px)`
     }
     render()
   }
@@ -72,26 +71,29 @@ export const WavyBackground = ({
     "#f97316", // Heating - Orange
     "#fb923c", // Heating - Light Orange
   ]
+
   const drawWave = (n: number) => {
+    if (!ctx.current) return
     nt += getSpeed()
     for (i = 0; i < n; i++) {
-      ctx.beginPath()
-      ctx.lineWidth = waveWidth || 50
-      ctx.strokeStyle = waveColors[i % waveColors.length]
+      ctx.current.beginPath()
+      ctx.current.lineWidth = waveWidth || 50
+      ctx.current.strokeStyle = waveColors[i % waveColors.length]
       for (x = 0; x < w; x += 5) {
         var y = noise(x / 800, 0.3 * i, nt) * 100
-        ctx.lineTo(x, y + h * 0.5) // adjust for height, currently at 50% of the container
+        ctx.current.lineTo(x, y + h * 0.5)
       }
-      ctx.stroke()
-      ctx.closePath()
+      ctx.current.stroke()
+      ctx.current.closePath()
     }
   }
 
   let animationId: number
   const render = () => {
-    ctx.fillStyle = backgroundFill || "black"
-    ctx.globalAlpha = waveOpacity || 0.5
-    ctx.fillRect(0, 0, w, h)
+    if (!ctx.current) return
+    ctx.current.fillStyle = backgroundFill || "black"
+    ctx.current.globalAlpha = waveOpacity || 0.5
+    ctx.current.fillRect(0, 0, w, h)
     drawWave(5)
     animationId = requestAnimationFrame(render)
   }
@@ -99,13 +101,14 @@ export const WavyBackground = ({
   useEffect(() => {
     init()
     return () => {
-      cancelAnimationFrame(animationId)
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+      }
     }
   }, [])
 
   const [isSafari, setIsSafari] = useState(false)
   useEffect(() => {
-    // I'm sorry but i have got to support it on safari.
     setIsSafari(
       typeof window !== "undefined" &&
         navigator.userAgent.includes("Safari") &&
@@ -113,19 +116,13 @@ export const WavyBackground = ({
     )
   }, [])
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    // ... existing code ...
-  }
-
   return (
     <div className={cn("h-screen flex flex-col items-center justify-center overflow-hidden", containerClassName)}>
       <canvas
         className="absolute inset-0 z-0 overflow-hidden"
         ref={canvasRef}
         id="canvas"
-        style={{
-          ...(isSafari ? { filter: `blur(${blur}px)` } : {}),
-        }}
+        style={isSafari ? { filter: `blur(${blur}px)` } : undefined}
       ></canvas>
       <div className={cn("relative z-10", className)} {...props}>
         {children}

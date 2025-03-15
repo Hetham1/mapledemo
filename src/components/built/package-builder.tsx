@@ -39,18 +39,6 @@ interface Selection {
   image?: string;
 }
 
-// Add proper type definitions at the top of the file
-type PackageData = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  features: string[];
-};
-
-type HandleSelectFunction = (id: string, selected: boolean) => void;
-type HandleChangeFunction = (value: string | number, field: string) => void;
-
 // Define the categories with colors
 const packageCategories = [
   {
