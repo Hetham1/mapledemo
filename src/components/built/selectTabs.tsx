@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Tabs } from "../ui/tabs"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs"
 import CardHoverEffectDemo from "./tabsContent"
 import SelectionForm from "./form-demo"
 
@@ -283,6 +283,7 @@ export default function TabsDemo() {
             items={heatPumpData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
+            tabName="heat-pump"
           />
         </div>
       ),
@@ -297,6 +298,7 @@ export default function TabsDemo() {
             items={furnaceData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
+            tabName="furnace"
           />
         </div>
       ),
@@ -311,6 +313,7 @@ export default function TabsDemo() {
             items={thermostatData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
+            tabName="thermostat"
           />
         </div>
       ),
@@ -325,6 +328,7 @@ export default function TabsDemo() {
             items={humidifierData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
+            tabName="humidifier"
           />
         </div>
       ),
@@ -339,6 +343,7 @@ export default function TabsDemo() {
             items={airCleanerData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
+            tabName="air-cleaner"
           />
         </div>
       ),
@@ -353,6 +358,7 @@ export default function TabsDemo() {
             items={warrantyData}
             onSelect={handleSelectItem}
             selectedItems={selectedItems}
+            tabName="warranty"
           />
         </div>
       ),
@@ -363,7 +369,20 @@ export default function TabsDemo() {
     <div className="flex flex-col p-4 items-center justify-start gap-8 min-h-screen bg-red-500">
       <p>title for edit section</p>
       <div className="relative min-h-[40rem] flex flex-col max-w-5xl mx-auto w-full items-start justify-start">
-        <Tabs tabs={tabs} />
+        <Tabs defaultValue={tabs[0].value}>
+          <TabsList>
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value}>
+                {tab.title}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {tabs.map((tab) => (
+            <TabsContent key={tab.value} value={tab.value}>
+              {tab.content}
+            </TabsContent>
+          ))}
+        </Tabs>
       </div>
 
       {/* Submit button */}
@@ -402,7 +421,13 @@ export default function TabsDemo() {
       </div>
 
       {/* Selection Form */}
-      {showForm && <SelectionForm selectedItems={getSelectedItemsData()} onClose={() => setShowForm(false)} />}
+      {showForm && (
+        <SelectionForm 
+          selectedItems={getSelectedItemsData()} 
+          onClose={() => setShowForm(false)} 
+          formType="custom"
+        />
+      )}
     </div>
   )
 }
