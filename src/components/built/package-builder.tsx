@@ -27,14 +27,16 @@ interface Option {
   sizes?: string[];
   efficiency?: string;
   type?: string;
+  image?: string;
 }
 
-interface Category {
+interface Selection {
   id: string;
-  name: string;
+  title: string;
   description: string;
-  options: Option[];
-  color: string;
+  price: number;
+  category: string;
+  image?: string;
 }
 
 // Add proper type definitions at the top of the file
@@ -147,7 +149,7 @@ function getColorClasses(color: string) {
 
 export default function PackageBuilder() {
   const [currentStep, setCurrentStep] = useState(0)
-  const [selections, setSelections] = useState<Record<string, any>>({})
+  const [selections, setSelections] = useState<Record<string, Selection>>({})
   const [showSummary, setShowSummary] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
@@ -158,7 +160,14 @@ export default function PackageBuilder() {
   const handleSelect = (option: Option) => {
     setSelections({
       ...selections,
-      [currentCategory.id]: option,
+      [currentCategory.id]: {
+        id: option.id,
+        title: option.title,
+        description: option.description,
+        price: option.price,
+        category: currentCategory.id,
+        image: option.image,
+      },
     })
   }
 
@@ -183,7 +192,7 @@ export default function PackageBuilder() {
   }
 
   const calculateTotal = () => {
-    return Object.values(selections).reduce((total: number, item: any) => total + (item.price || 0), 0)
+    return Object.values(selections).reduce((total: number, item: Selection) => total + (item.price || 0), 0)
   }
 
   const isOptionSelected = (option: Option) => {

@@ -6,6 +6,13 @@ import { cn } from "@/lib/utils"
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 
+interface CardItem {
+  title: string;
+  description: string;
+  link: string;
+  id?: string;
+}
+
 export const HoverEffect = ({
   items,
   className,
@@ -13,14 +20,9 @@ export const HoverEffect = ({
   selectedItems,
   tabName,
 }: {
-  items: {
-    title: string
-    description: string
-    link: string
-    id?: string // Added id for tracking selections
-  }[]
+  items: CardItem[]
   className?: string
-  onSelect?: (item: any, tabName: string) => void
+  onSelect?: (item: CardItem) => void
   selectedItems?: string[]
   tabName: string
 }) => {
@@ -32,10 +34,10 @@ export const HoverEffect = ({
     id: item.id || `${tabName}-item-${index}`,
   }))
 
-  const handleCardClick = (e: React.MouseEvent, item: any) => {
+  const handleCardClick = (e: React.MouseEvent, item: CardItem) => {
     e.preventDefault() // Prevent the link from navigating
     if (onSelect) {
-      onSelect(item, tabName)
+      onSelect(item)
     }
   }
 

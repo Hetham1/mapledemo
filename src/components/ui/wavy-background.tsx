@@ -3,6 +3,25 @@ import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
 import { createNoise3D } from "simplex-noise"
 
+interface WavyBackgroundProps {
+  children: React.ReactNode;
+  className?: string;
+  containerClassName?: string;
+  colors?: string[];
+  waveWidth?: number;
+  backgroundFill?: string;
+  blur?: number;
+  speed?: "slow" | "fast";
+  waveOpacity?: number;
+  position?: "relative" | "absolute";
+  style?: React.CSSProperties;
+}
+
+interface Point {
+  x: number;
+  y: number;
+}
+
 export const WavyBackground = ({
   children,
   className,
@@ -13,19 +32,10 @@ export const WavyBackground = ({
   blur = 10,
   speed = "fast",
   waveOpacity = 0.5,
+  position = "relative",
+  style,
   ...props
-}: {
-  children?: any
-  className?: string
-  containerClassName?: string
-  colors?: string[]
-  waveWidth?: number
-  backgroundFill?: string
-  blur?: number
-  speed?: "slow" | "fast"
-  waveOpacity?: number
-  [key: string]: any
-}) => {
+}: WavyBackgroundProps) => {
   const noise = createNoise3D()
   let w: number, h: number, nt: number, i: number, x: number, ctx: any, canvas: any
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -102,6 +112,10 @@ export const WavyBackground = ({
         !navigator.userAgent.includes("Chrome"),
     )
   }, [])
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    // ... existing code ...
+  }
 
   return (
     <div className={cn("h-screen flex flex-col items-center justify-center overflow-hidden", containerClassName)}>

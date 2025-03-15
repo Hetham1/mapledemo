@@ -18,6 +18,13 @@ type ParticlesProps = {
   particleColor?: string
   particleDensity?: number
 }
+
+interface SparkleProps {
+  color?: string;
+  size?: number;
+  style?: React.CSSProperties;
+}
+
 export const SparklesCore = (props: ParticlesProps) => {
   const { id, className, background, minSize, maxSize, speed, particleColor, particleDensity } = props
   const [init, setInit] = useState(false)
