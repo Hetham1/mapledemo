@@ -36,7 +36,7 @@ export const WavyBackground = ({
   const xRef = useRef<number>(0)
   const ctx = useRef<CanvasRenderingContext2D | null>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationIdRef = useRef<number>()
+  const animationIdRef = useRef<number | undefined>(undefined)
   
   const getSpeed = React.useCallback(() => {
     switch (speed) {
