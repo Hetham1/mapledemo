@@ -37,42 +37,42 @@ const packageCategories = [
     name: "Heat Pump",
     description: "Choose the right size and efficiency for your home",
     options: originalHeatPumpData,
-    color: "blue",
+    color: "amber",
   },
   {
     id: "furnace",
     name: "Furnace",
     description: "Select the appropriate BTU output for your space",
     options: originalFurnaceData,
-    color: "cyan",
+    color: "amber",
   },
   {
     id: "thermostat",
     name: "Thermostat",
     description: "Control your system with the right thermostat",
     options: originalThermostatData,
-    color: "violet",
+    color: "amber",
   },
   {
     id: "humidifier",
     name: "Humidifier",
     description: "Maintain optimal humidity levels in your home",
     options: originalHumidifierData,
-    color: "emerald",
+    color: "amber",
   },
   {
     id: "air-cleaner",
     name: "Air Cleaner",
     description: "Improve your indoor air quality",
     options: originalAirCleanerData,
-    color: "orange",
+    color: "amber",
   },
   {
     id: "warranty",
     name: "Warranty & Service",
     description: "Protect your investment",
     options: originalWarrantyData,
-    color: "yellow",
+    color: "amber",
   },
 ];
 
@@ -82,12 +82,12 @@ function getColorClasses(color: string) {
     string,
     { text: string; bg: string; bgLight: string; border: string; hover: string }
   > = {
-    blue: {
-      text: "text-blue-600",
-      bg: "bg-blue-600",
-      bgLight: "bg-blue-50",
-      border: "border-blue-600",
-      hover: "hover:bg-blue-700",
+    amber: {
+      text: "text-amber-700",
+      bg: "bg-amber-700",
+      bgLight: "bg-amber-100",
+      border: "border-amber-700",
+      hover: "hover:bg-amber-800",
     },
     cyan: {
       text: "text-cyan-600",
@@ -138,6 +138,7 @@ interface Option {
   sizes?: string[];
   efficiency?: string;
   type?: string;
+  image?: string;
 }
 
 interface Selection {
@@ -198,6 +199,7 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
         description: option.description,
         price: option.price,
         category: currentCategory.id,
+        image: option.image, // Add this line
       },
     });
   };
@@ -255,7 +257,7 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
     return (
       <div className="max-w-4xl mx-auto">
         <Card className="border-0 shadow-lg overflow-hidden">
-          <div className="bg-blue-600 text-white rounded-t-lg p-4">
+          <div className="bg-amber-600 text-white rounded-t-lg p-4">
             <div className="flex items-center gap-2">
               <PackageCheck className="h-7 w-7" />
               <h2 className="text-2xl font-bold">Your Custom HVAC Package</h2>
@@ -313,28 +315,36 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
 
               <div className="flex justify-between items-center pt-4 p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="text-xl font-bold text-blue-600">
+                  <h3 className="text-xl font-bold text-amber-600">
                     Total Package Price
                   </h3>
                   <p className="text-sm text-gray-500">Installation included</p>
                 </div>
-                <p className="text-2xl font-bold text-blue-600">
-                  ${calculateTotal().toLocaleString()}
-                </p>
+                <div className="flex flex-col justify-end items-end">
+                  <p className="text-2xl font-extrabold text-black">
+                    ${calculateTotal().toLocaleString()}
+                  </p>
+                  <p className="text-sm text-gray-600 font-semibold">
+                    Financing available at{" "}
+                    <span className="text-gray-900 font-bold">
+                      ${Math.round(calculateTotal() / 36)}/month
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col sm:flex-row gap-3 p-6 bg-white">
             <Button
               variant="outline"
-              className="w-full sm:w-auto border-blue-500 text-blue-600 hover:bg-blue-50 transition-all duration-300"
+              className="w-full sm:w-auto border-amber-500 text-amber-600 hover:bg-amber-50 transition-all duration-300"
               onClick={handleReset}
             >
               <RefreshCw className="mr-2 h-4 w-4" />
               Start Over
             </Button>
             <Button
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition-all duration-300"
+              className="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 transition-all duration-300"
               onClick={() => setShowForm(true)}
             >
               Request Quote
@@ -364,7 +374,7 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
                 className={cn(
                   "h-2 w-10 rounded-full transition-all duration-300",
                   isActive
-                    ? "bg-blue-500"
+                    ? "bg-amber-500"
                     : isCompleted
                     ? "bg-emerald-500"
                     : "bg-gray-200"
@@ -433,7 +443,7 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
           variant="outline"
           onClick={handlePrevious}
           disabled={currentStep === 0}
-          className="border-blue-500 text-blue-600 hover:bg-blue-50 transition-all duration-300"
+          className=" text-red-900 hover:bg-orange-400 bg-orange-300 transition-all duration-300"
         >
           <ChevronLeft className="mr-2 h-4 w-4" />
           Previous

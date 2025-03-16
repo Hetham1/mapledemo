@@ -310,7 +310,7 @@ export default function ExpandableCardDemo({
               <div className="px-4 pb-4">
                 <button
                   onClick={() => openForm(active)}
-                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="w-full px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors"
                 >
                   Request Quote for{" "}
                   {selectedSizes[active.id] || active.sizes[0]} Size
@@ -339,7 +339,7 @@ export default function ExpandableCardDemo({
             layoutId={`card-${card.title}-${id}`}
             key={card.title}
             onClick={() => setActive(card)}
-            className="p-4 flex flex-col bg-hesam-back hover:border-b-blue-200 dark:hover:bg-neutral-800 rounded-xl border-transparent cursor-pointer"
+            className="p-4 flex flex-col bg-hesam-back hover:border-b-amber-200 dark:hover:bg-neutral-800 rounded-xl border-transparent cursor-pointer"
           >
             <div className="flex gap-4 flex-col w-full">
               <motion.div layoutId={`image-${card.title}-${id}`}>

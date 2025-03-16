@@ -1,58 +1,73 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Menu, X, ChevronDown, ChevronUp, Home, Info, Settings, Phone, Package, MessageCircle } from "lucide-react"
-import { AnimatePresence, motion } from "framer-motion"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  ChevronUp,
+  Home,
+  Info,
+  Settings,
+  Phone,
+  Package,
+  MessageCircle,
+} from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function MobileNav({ openChat }: { openChat: () => void }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [pricingOpen, setPricingOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [pricingOpen, setPricingOpen] = useState(false);
 
   // Close the menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      if (isOpen && !target.closest("#mobile-menu") && !target.closest("#menu-button")) {
-        setIsOpen(false)
+      const target = e.target as HTMLElement;
+      if (
+        isOpen &&
+        !target.closest("#mobile-menu") &&
+        !target.closest("#menu-button")
+      ) {
+        setIsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [isOpen])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   // Prevent scrolling when menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.body.style.overflow = "auto"
-    }
-  }, [isOpen])
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
+    setIsOpen(!isOpen);
     if (isOpen) {
-      setPricingOpen(false)
+      setPricingOpen(false);
     }
-  }
+  };
 
   const togglePricing = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setPricingOpen(!pricingOpen)
-  }
+    e.stopPropagation();
+    setPricingOpen(!pricingOpen);
+  };
 
   const handleChatClick = () => {
-    openChat()
-    setIsOpen(false) // Close the mobile menu
-  }
+    openChat();
+    setIsOpen(false); // Close the mobile menu
+  };
 
   return (
     <div className="lg:hidden">
@@ -89,20 +104,29 @@ export default function MobileNav({ openChat }: { openChat: () => void }) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="mr-2 text-blue-400"
+                className="mr-2 text-amber-500"
               >
                 <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
               </svg>
-              <h2 className="text-xl font-bold text-blue-400">MapleAir</h2>
+              <h2 className="text-xl font-bold text-amber-500">MapleAir</h2>
             </div>
 
             {/* Navigation Links */}
             <nav className="flex-1">
               <ul className="space-y-4 text-lg">
                 <li>
+                  <button
+                    onClick={handleChatClick}
+                    className="flex items-center py-2 w-full text-white hover:text-amber-500 transition-colors"
+                  >
+                    <MessageCircle size={20} className="mr-3" />
+                    Chat with AI Assistant
+                  </button>
+                </li>
+                <li>
                   <Link
                     href="/"
-                    className="flex items-center py-2 text-white hover:text-blue-400 transition-colors"
+                    className="flex items-center py-2 text-white hover:text-amber-500 transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
                     <Home size={20} className="mr-3" />
@@ -110,20 +134,10 @@ export default function MobileNav({ openChat }: { openChat: () => void }) {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/about"
-                    className="flex items-center py-2 text-white hover:text-blue-400 transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Info size={20} className="mr-3" />
-                    About Us
-                  </Link>
-                </li>
-                <li>
                   <div className="py-2">
                     <button
                       onClick={togglePricing}
-                      className="flex items-center w-full text-white hover:text-blue-400 transition-colors"
+                      className="flex items-center w-full text-white hover:text-amber-500 transition-colors"
                     >
                       <Package size={20} className="mr-3" />
                       Pricing
@@ -145,38 +159,20 @@ export default function MobileNav({ openChat }: { openChat: () => void }) {
                         >
                           <li>
                             <Link
-                              href="/hobby"
-                              className="block py-1 text-gray-300 hover:text-blue-400 transition-colors"
+                              href="#pre-package"
+                              className="block py-1 text-gray-300 hover:text-amber-500 transition-colors"
                               onClick={() => setIsOpen(false)}
                             >
-                              Hobby
+                              Pre-Package
                             </Link>
                           </li>
                           <li>
                             <Link
-                              href="/individual"
-                              className="block py-1 text-gray-300 hover:text-blue-400 transition-colors"
+                              href="#custom-package"
+                              className="block py-1 text-gray-300 hover:text-amber-500 transition-colors"
                               onClick={() => setIsOpen(false)}
                             >
-                              Individual
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/team"
-                              className="block py-1 text-gray-300 hover:text-blue-400 transition-colors"
-                              onClick={() => setIsOpen(false)}
-                            >
-                              Team
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/enterprise"
-                              className="block py-1 text-gray-300 hover:text-blue-400 transition-colors"
-                              onClick={() => setIsOpen(false)}
-                            >
-                              Enterprise
+                              Custom-Package
                             </Link>
                           </li>
                         </motion.ul>
@@ -186,41 +182,34 @@ export default function MobileNav({ openChat }: { openChat: () => void }) {
                 </li>
                 <li>
                   <Link
-                    href="/salespanel"
-                    className="flex items-center py-2 text-white hover:text-blue-400 transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Settings size={20} className="mr-3" />
-                    Sales Panel
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/contact"
-                    className="flex items-center py-2 text-white hover:text-blue-400 transition-colors"
+                    className="flex items-center py-2 text-white hover:text-amber-500 transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
                     <Phone size={20} className="mr-3" />
                     Contact
                   </Link>
                 </li>
-                {/* Add Chat option */}
                 <li>
-                  <button
-                    onClick={handleChatClick}
-                    className="flex items-center py-2 w-full text-white hover:text-blue-400 transition-colors"
+                  <Link
+                    href="/about"
+                    className="flex items-center py-2 text-white hover:text-amber-500 transition-colors"
+                    onClick={() => setIsOpen(false)}
                   >
-                    <MessageCircle size={20} className="mr-3" />
-                    Chat with AI Assistant
-                  </button>
+                    <Info size={20} className="mr-3" />
+                    About Us
+                  </Link>
                 </li>
               </ul>
             </nav>
 
             {/* Contact Info */}
             <div className="mt-auto pt-6 border-t border-gray-800">
-              <p className="text-gray-400 text-sm mb-2">Need help? Call us:</p>
-              <a href="tel:+14165551234" className="text-blue-400 font-semibold text-lg">
+              <p className="text-gray-500 text-sm mb-2">Need help? Call us:</p>
+              <a
+                href="tel:+14165551234"
+                className="text-amber-500 font-semibold text-lg"
+              >
                 (416) 555-1234
               </a>
             </div>
@@ -228,6 +217,5 @@ export default function MobileNav({ openChat }: { openChat: () => void }) {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }
-

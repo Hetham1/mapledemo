@@ -1,13 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Check, ChevronLeft, ChevronRight, PackageCheck, RefreshCw } from "lucide-react"
-import Image from "next/image"
+import { useState } from "react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  PackageCheck,
+  RefreshCw,
+} from "lucide-react";
+import Image from "next/image";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-import UnifiedForm from "./form-demo"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import UnifiedForm from "./form-demo";
 import {
   heatPumpData,
   furnaceData,
@@ -15,7 +28,7 @@ import {
   humidifierData,
   airCleanerData,
   warrantyData,
-} from "@/lib/hvac-data"
+} from "@/lib/hvac-data";
 
 // Define proper interfaces for the data structure
 interface Option {
@@ -83,67 +96,98 @@ const packageCategories = [
     options: warrantyData,
     color: "yellow",
   },
-]
+];
 
 // Helper function to get color classes
 function getColorClasses(color: string) {
-  const colorMap: Record<string, { text: string; bg: string; bgLight: string; border: string; hover: string }> = {
-    blue: {
-      text: "text-blue-600",
-      bg: "bg-blue-600",
-      bgLight: "bg-blue-50",
-      border: "border-blue-600",
-      hover: "hover:bg-blue-700",
+  const colorMap: Record<
+    string,
+    { text: string; bg: string; bgLight: string; border: string; hover: string }
+  > = {
+    red: {
+      text: "text-red-700",
+      bg: "bg-red-700",
+      bgLight: "bg-red-100",
+      border: "border-red-700",
+      hover: "hover:bg-red-800",
     },
-    cyan: {
-      text: "text-cyan-600",
-      bg: "bg-cyan-600",
-      bgLight: "bg-cyan-50",
-      border: "border-cyan-600",
-      hover: "hover:bg-cyan-700",
+    crimson: {
+      text: "text-rose-800",
+      bg: "bg-rose-800",
+      bgLight: "bg-rose-100",
+      border: "border-rose-800",
+      hover: "hover:bg-rose-900",
     },
-    violet: {
-      text: "text-violet-600",
-      bg: "bg-violet-600",
-      bgLight: "bg-violet-50",
-      border: "border-violet-600",
-      hover: "hover:bg-violet-700",
-    },
-    emerald: {
-      text: "text-emerald-600",
-      bg: "bg-emerald-600",
-      bgLight: "bg-emerald-50",
-      border: "border-emerald-600",
-      hover: "hover:bg-emerald-700",
+    maroon: {
+      text: "text-red-900",
+      bg: "bg-red-900",
+      bgLight: "bg-red-100",
+      border: "border-red-900",
+      hover: "hover:bg-red-950",
     },
     orange: {
-      text: "text-orange-600",
-      bg: "bg-orange-600",
-      bgLight: "bg-orange-50",
-      border: "border-orange-600",
-      hover: "hover:bg-orange-700",
+      text: "text-orange-700",
+      bg: "bg-orange-700",
+      bgLight: "bg-orange-100",
+      border: "border-orange-700",
+      hover: "hover:bg-orange-800",
     },
-    yellow: {
-      text: "text-yellow-600",
-      bg: "bg-yellow-600",
-      bgLight: "bg-yellow-50",
-      border: "border-yellow-600",
-      hover: "hover:bg-yellow-700",
+    amber: {
+      text: "text-amber-700",
+      bg: "bg-amber-700",
+      bgLight: "bg-amber-100",
+      border: "border-amber-700",
+      hover: "hover:bg-amber-800",
     },
-  }
+    bronze: {
+      text: "text-yellow-800",
+      bg: "bg-yellow-800",
+      bgLight: "bg-yellow-100",
+      border: "border-yellow-800",
+      hover: "hover:bg-yellow-900",
+    },
+    brown: {
+      text: "text-amber-900",
+      bg: "bg-amber-900",
+      bgLight: "bg-amber-100",
+      border: "border-amber-900",
+      hover: "hover:bg-amber-950",
+    },
+    gold: {
+      text: "text-yellow-700",
+      bg: "bg-yellow-700",
+      bgLight: "bg-yellow-100",
+      border: "border-yellow-700",
+      hover: "hover:bg-yellow-800",
+    },
+    rust: {
+      text: "text-orange-800",
+      bg: "bg-orange-800",
+      bgLight: "bg-orange-100",
+      border: "border-orange-800",
+      hover: "hover:bg-orange-900",
+    },
+    sienna: {
+      text: "text-orange-900",
+      bg: "bg-orange-900",
+      bgLight: "bg-orange-100",
+      border: "border-orange-900",
+      hover: "hover:bg-orange-950",
+    },
+  };
 
-  return colorMap[color] || colorMap.blue
+  return colorMap[color] || colorMap.amber;
 }
 
 export default function PackageBuilder() {
-  const [currentStep, setCurrentStep] = useState(0)
-  const [selections, setSelections] = useState<Record<string, Selection>>({})
-  const [showSummary, setShowSummary] = useState(false)
-  const [showForm, setShowForm] = useState(false)
+  const [currentStep, setCurrentStep] = useState(0);
+  const [selections, setSelections] = useState<Record<string, Selection>>({});
+  const [showSummary, setShowSummary] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
-  const isLastStep = currentStep === packageCategories.length - 1
-  const currentCategory = packageCategories[currentStep]
-  const currentColorClasses = getColorClasses(currentCategory.color)
+  const isLastStep = currentStep === packageCategories.length - 1;
+  const currentCategory = packageCategories[currentStep];
+  const currentColorClasses = getColorClasses(currentCategory.color);
 
   const handleSelect = (option: Option) => {
     setSelections({
@@ -156,113 +200,150 @@ export default function PackageBuilder() {
         category: currentCategory.id,
         image: option.image,
       },
-    })
-  }
+    });
+  };
 
   const handleNext = () => {
     if (isLastStep) {
-      setShowSummary(true)
+      setShowSummary(true);
     } else {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     }
-  }
+  };
 
   const handleReset = () => {
-    setSelections({})
-    setCurrentStep(0)
-    setShowSummary(false)
-  }
+    setSelections({});
+    setCurrentStep(0);
+    setShowSummary(false);
+  };
 
   const calculateTotal = () => {
-    return Object.values(selections).reduce((total: number, item: Selection) => total + (item.price || 0), 0)
-  }
+    return Object.values(selections).reduce(
+      (total: number, item: Selection) => total + (item.price || 0),
+      0
+    );
+  };
 
   const isOptionSelected = (option: Option) => {
-    return selections[currentCategory?.id]?.id === option.id
-  }
+    return selections[currentCategory?.id]?.id === option.id;
+  };
 
   const isStepComplete = () => {
-    return selections[currentCategory?.id] !== undefined
-  }
+    return selections[currentCategory?.id] !== undefined;
+  };
 
   const getSelectedItemsArray = () => {
-    return Object.values(selections)
-  }
+    return Object.values(selections);
+  };
 
   if (showForm) {
-    return <UnifiedForm selectedItems={getSelectedItemsArray()} onClose={() => setShowForm(false)} formType="custom" />
+    return (
+      <UnifiedForm
+        selectedItems={getSelectedItemsArray()}
+        onClose={() => setShowForm(false)}
+        formType="custom"
+      />
+    );
   }
 
   if (showSummary) {
     return (
       <div className="max-w-4xl mx-auto">
         <Card className="border-0 shadow-lg overflow-hidden">
-          <div className="bg-blue-600 text-white rounded-t-lg p-4">
+          <div className="bg-amber-700 text-white rounded-t-lg p-4">
             <div className="flex items-center gap-2">
               <PackageCheck className="h-7 w-7" />
               <h2 className="text-2xl font-bold">Your Custom HVAC Package</h2>
             </div>
-            <p className="mt-1 opacity-80">Review your selections and submit to request a quote</p>
+            <p className="mt-1 opacity-80">
+              Review your selections and submit to request a quote
+            </p>
           </div>
           <CardContent className="p-6">
             <div className="space-y-6">
               {packageCategories.map((category) => {
-                const selection = selections[category.id]
-                const colorClasses = getColorClasses(category.color)
+                const selection = selections[category.id];
+                const colorClasses = getColorClasses(category.color);
                 return (
-                  <div key={category.id} className="rounded-lg bg-white p-4 shadow-sm">
-                    <h3 className={`font-medium ${colorClasses.text} mb-2`}>{category.name}</h3>
+                  <div
+                    key={category.id}
+                    className="rounded-lg bg-white p-4 shadow-sm"
+                  >
+                    <h3 className={`font-medium ${colorClasses.text} mb-2`}>
+                      {category.name}
+                    </h3>
                     {selection ? (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="h-16 w-16 relative rounded-lg overflow-hidden border shadow-sm">
                             <Image
-                              src={selection.image || "/placeholder.svg?height=64&width=64"}
+                              src={
+                                selection.image ||
+                                "/placeholder.svg?height=64&width=64"
+                              }
                               alt={selection.title}
                               fill
                               className="object-cover"
                             />
                           </div>
                           <div>
-                            <p className="font-semibold text-lg">{selection.title}</p>
-                            <p className="text-sm text-gray-500">{selection.description}</p>
+                            <p className="font-semibold text-lg">
+                              {selection.title}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {selection.description}
+                            </p>
                           </div>
                         </div>
-                        <p className={`font-bold text-lg ${colorClasses.text}`}>${selection.price?.toLocaleString()}</p>
+                        <p className={`font-bold text-lg ${colorClasses.text}`}>
+                          ${selection.price?.toLocaleString()}
+                        </p>
                       </div>
                     ) : (
                       <p className="text-gray-500 italic">No selection made</p>
                     )}
                   </div>
-                )
+                );
               })}
 
               <div className="flex justify-between items-center pt-4 p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="text-xl font-bold text-blue-600">Total Package Price</h3>
+                  <h3 className="text-xl font-bold text-black">
+                    Total Package Price
+                  </h3>
                   <p className="text-sm text-gray-500">Installation included</p>
                 </div>
-                <p className="text-2xl font-bold text-blue-600">${calculateTotal().toLocaleString()}</p>
+                <div className="flex flex-col justify-end items-end">
+                  <p className="text-2xl font-extrabold text-black">
+                    ${calculateTotal().toLocaleString()}
+                  </p>
+                  <p className="text-sm text-gray-600 font-semibold">
+                    Financing available at{" "}
+                    <span className="text-gray-900 font-bold">
+                      ${Math.round(calculateTotal() / 36)}/month
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col sm:flex-row gap-3 p-6 bg-white">
             <Button
               variant="outline"
-              className="w-full sm:w-auto border-blue-500 text-blue-600 hover:bg-blue-50 transition-all duration-300"
+              className="w-full sm:w-auto text-red-900 hover:bg-orange-300 bg-orange-200 transition-all duration-300"
               onClick={handleReset}
             >
               <RefreshCw className="mr-2 h-4 w-4" />
               Start Over
             </Button>
             <Button
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition-all duration-300"
+              className="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 transition-all duration-300"
               onClick={() => setShowForm(true)}
             >
               Request Quote
@@ -270,37 +351,46 @@ export default function PackageBuilder() {
           </CardFooter>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
     <div className="max-w-5xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
         <h2 className="text-2xl font-semibold">
-          <span className={currentColorClasses.text}>Step {currentStep + 1}:</span> {currentCategory.name}
+          <span className={currentColorClasses.text}>
+            Step {currentStep + 1}:
+          </span>{" "}
+          {currentCategory.name}
         </h2>
         <div className="flex items-center gap-1">
           {packageCategories.map((category, index) => {
-            const isActive = index === currentStep
-            const isCompleted = index < currentStep || selections[category.id]
+            const isActive = index === currentStep;
+            const isCompleted = index < currentStep || selections[category.id];
             return (
               <div
                 key={index}
                 className={cn(
                   "h-2 w-10 rounded-full transition-all duration-300",
-                  isActive ? "bg-blue-500" : isCompleted ? "bg-emerald-500" : "bg-gray-200",
+                  isActive
+                    ? "bg-amber-600"
+                    : isCompleted
+                    ? "bg-emerald-500"
+                    : "bg-gray-200"
                 )}
               />
-            )
+            );
           })}
         </div>
       </div>
 
-      <p className="text-gray-500 mb-8 text-center md:text-left">{currentCategory.description}</p>
+      <p className="text-gray-500 mb-8 text-center md:text-left">
+        {currentCategory.description}
+      </p>
 
       <div className="grid md:grid-cols-3 gap-6 mb-10">
         {currentCategory.options.map((option) => {
-          const isSelected = isOptionSelected(option)
+          const isSelected = isOptionSelected(option);
           return (
             <Card
               key={option.id}
@@ -308,7 +398,7 @@ export default function PackageBuilder() {
                 "relative overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer",
                 isSelected
                   ? `${currentColorClasses.bgLight} border-2 ${currentColorClasses.border} shadow-md`
-                  : "bg-white hover:bg-gray-50",
+                  : "bg-white hover:bg-gray-50"
               )}
               onClick={() => handleSelect(option)}
             >
@@ -326,7 +416,9 @@ export default function PackageBuilder() {
               <CardContent className="flex justify-center pb-2">
                 <div className="relative h-32 w-32 transition-transform duration-300">
                   <Image
-                    src={option.image || "/placeholder.svg?height=128&width=128"}
+                    src={
+                      option.image || "/placeholder.svg?height=128&width=128"
+                    }
                     alt={option.title}
                     fill
                     className="object-contain"
@@ -334,12 +426,14 @@ export default function PackageBuilder() {
                 </div>
               </CardContent>
               <CardFooter className="pt-0">
-                <p className={`text-xl font-bold w-full text-center ${currentColorClasses.text}`}>
+                <p
+                  className={`text-xl font-bold w-full text-center ${currentColorClasses.text}`}
+                >
                   ${option.price?.toLocaleString()}
                 </p>
               </CardFooter>
             </Card>
-          )
+          );
         })}
       </div>
 
@@ -348,7 +442,7 @@ export default function PackageBuilder() {
           variant="outline"
           onClick={handlePrevious}
           disabled={currentStep === 0}
-          className="border-blue-500 text-blue-600 hover:bg-blue-50 transition-all duration-300"
+          className=" text-red-900 hover:bg-orange-400 bg-orange-300 transition-all duration-300"
         >
           <ChevronLeft className="mr-2 h-4 w-4" />
           Previous
@@ -364,6 +458,5 @@ export default function PackageBuilder() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
-

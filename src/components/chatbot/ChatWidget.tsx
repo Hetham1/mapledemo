@@ -211,7 +211,7 @@ export default function ChatWidget({
               variant="ghost"
               size="icon"
               onClick={handleSwitchMode}
-              className="h-8 w-8 text-white hover:bg-blue-200"
+              className="h-8 w-8 text-white hover:bg-amber-600"
             >
               {isFullScreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
             </Button>
@@ -219,7 +219,7 @@ export default function ChatWidget({
               variant="ghost"
               size="icon"
               onClick={handleToggleChat}
-              className="h-8 w-8 text-white hover:bg-blue-200"
+              className="h-8 w-8 text-white hover:bg-amber-600"
             >
               <X size={18} />
             </Button>
@@ -255,7 +255,7 @@ export default function ChatWidget({
               >
                 <path
                   d="M90 235 Q150 265 210 235"
-                  stroke="#0056a4"
+                  stroke="#bf5f00"
                   strokeWidth="10"
                   fill="none"
                   strokeLinecap="round"

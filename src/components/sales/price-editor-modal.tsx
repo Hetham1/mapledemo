@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { X, Save, AlertCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useState } from "react";
+import { X, Save, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Import original data
 import {
@@ -15,27 +15,39 @@ import {
   humidifierData,
   airCleanerData,
   warrantyData,
-} from "@/lib/hvac-data"
+} from "@/lib/hvac-data";
 
 // Original prepackaged data
 const prepackagedData = [
-  { id: "essential-comfort", title: "Essential Comfort Bundle", originalPrice: 3499 },
-  { id: "premium-comfort", title: "Premium Comfort Bundle", originalPrice: 4999 },
+  {
+    id: "essential-comfort",
+    title: "Essential Comfort Bundle",
+    originalPrice: 3499,
+  },
+  {
+    id: "premium-comfort",
+    title: "Premium Comfort Bundle",
+    originalPrice: 4999,
+  },
   { id: "eco-friendly", title: "Eco-Friendly Heat Pump", originalPrice: 5299 },
-  { id: "ultimate-climate", title: "Ultimate Climate Control", originalPrice: 7999 },
+  {
+    id: "ultimate-climate",
+    title: "Ultimate Climate Control",
+    originalPrice: 7999,
+  },
   { id: "budget-friendly", title: "Budget-Friendly HVAC", originalPrice: 2499 },
   { id: "luxury-home", title: "Luxury Home Comfort", originalPrice: 12999 },
-]
+];
 
 interface PriceEditorModalProps {
-  mode: "prepackaged" | "components"
-  onClose: () => void
-  initialPrepackagedPrices: Record<string, number>
-  initialComponentPrices: Record<string, Record<string, number>>
+  mode: "prepackaged" | "components";
+  onClose: () => void;
+  initialPrepackagedPrices: Record<string, number>;
+  initialComponentPrices: Record<string, Record<string, number>>;
   onPriceUpdate: (
     prepackagedPrices: Record<string, number>,
-    componentPrices: Record<string, Record<string, number>>,
-  ) => void
+    componentPrices: Record<string, Record<string, number>>
+  ) => void;
 }
 
 export default function PriceEditorModal({
@@ -46,10 +58,14 @@ export default function PriceEditorModal({
   onPriceUpdate,
 }: PriceEditorModalProps) {
   // State for prepackaged prices
-  const [prepackagedPrices, setPrepackagedPrices] = useState<Record<string, number>>(initialPrepackagedPrices || {})
+  const [prepackagedPrices, setPrepackagedPrices] = useState<
+    Record<string, number>
+  >(initialPrepackagedPrices || {});
 
   // State for component prices
-  const [componentPrices, setComponentPrices] = useState<Record<string, Record<string, number>>>(
+  const [componentPrices, setComponentPrices] = useState<
+    Record<string, Record<string, number>>
+  >(
     initialComponentPrices || {
       "heat-pump": {},
       furnace: {},
@@ -57,26 +73,32 @@ export default function PriceEditorModal({
       humidifier: {},
       "air-cleaner": {},
       warranty: {},
-    },
-  )
+    }
+  );
 
-  const [activeTab, setActiveTab] = useState<string>(mode === "prepackaged" ? "prepackaged" : "heat-pump")
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<string>(
+    mode === "prepackaged" ? "prepackaged" : "heat-pump"
+  );
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Handle price change for prepackaged items
   const handlePrepackagedPriceChange = (id: string, value: string) => {
-    const numValue = Number.parseFloat(value.replace(/,/g, ""))
+    const numValue = Number.parseFloat(value.replace(/,/g, ""));
     if (!isNaN(numValue)) {
       setPrepackagedPrices((prev) => ({
         ...prev,
         [id]: numValue,
-      }))
+      }));
     }
-  }
+  };
 
   // Handle price change for component items
-  const handleComponentPriceChange = (categoryId: string, itemId: string, value: string) => {
-    const numValue = Number.parseFloat(value.replace(/,/g, ""))
+  const handleComponentPriceChange = (
+    categoryId: string,
+    itemId: string,
+    value: string
+  ) => {
+    const numValue = Number.parseFloat(value.replace(/,/g, ""));
     if (!isNaN(numValue)) {
       setComponentPrices((prev) => ({
         ...prev,
@@ -84,37 +106,40 @@ export default function PriceEditorModal({
           ...prev[categoryId],
           [itemId]: numValue,
         },
-      }))
+      }));
     }
-  }
+  };
 
   // Save all prices
   const saveChanges = () => {
     // Save prepackaged prices
-    localStorage.setItem("prepackagedPrices", JSON.stringify(prepackagedPrices))
+    localStorage.setItem(
+      "prepackagedPrices",
+      JSON.stringify(prepackagedPrices)
+    );
 
     // Save component prices
-    localStorage.setItem("componentPrices", JSON.stringify(componentPrices))
+    localStorage.setItem("componentPrices", JSON.stringify(componentPrices));
 
     // Update parent component with new prices
-    onPriceUpdate(prepackagedPrices, componentPrices)
+    onPriceUpdate(prepackagedPrices, componentPrices);
 
     // Show success message
-    setSuccessMessage("Prices updated successfully!")
+    setSuccessMessage("Prices updated successfully!");
 
     // Clear success message after 3 seconds
     setTimeout(() => {
-      setSuccessMessage(null)
-    }, 3000)
-  }
+      setSuccessMessage(null);
+    }, 3000);
+  };
 
   // Reset to original prices
   const resetToOriginal = () => {
     if (mode === "prepackaged") {
-      const emptyPrepackagedPrices = {}
-      setPrepackagedPrices(emptyPrepackagedPrices)
-      localStorage.removeItem("prepackagedPrices")
-      onPriceUpdate(emptyPrepackagedPrices, componentPrices)
+      const emptyPrepackagedPrices = {};
+      setPrepackagedPrices(emptyPrepackagedPrices);
+      localStorage.removeItem("prepackagedPrices");
+      onPriceUpdate(emptyPrepackagedPrices, componentPrices);
     } else {
       const emptyComponentPrices = {
         "heat-pump": {},
@@ -123,16 +148,16 @@ export default function PriceEditorModal({
         humidifier: {},
         "air-cleaner": {},
         warranty: {},
-      }
-      setComponentPrices(emptyComponentPrices)
-      localStorage.removeItem("componentPrices")
-      onPriceUpdate(prepackagedPrices, emptyComponentPrices)
+      };
+      setComponentPrices(emptyComponentPrices);
+      localStorage.removeItem("componentPrices");
+      onPriceUpdate(prepackagedPrices, emptyComponentPrices);
     }
-    setSuccessMessage("Prices reset to original values!")
+    setSuccessMessage("Prices reset to original values!");
     setTimeout(() => {
-      setSuccessMessage(null)
-    }, 3000)
-  }
+      setSuccessMessage(null);
+    }, 3000);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -140,7 +165,9 @@ export default function PriceEditorModal({
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-xl font-bold">
-            {mode === "prepackaged" ? "Edit Pre-packaged Prices" : "Edit Component Prices"}
+            {mode === "prepackaged"
+              ? "Edit Pre-packaged Prices"
+              : "Edit Component Prices"}
           </h2>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-5 w-5" />
@@ -152,16 +179,24 @@ export default function PriceEditorModal({
           <Alert className="m-4 bg-green-50 border-green-200">
             <AlertCircle className="h-4 w-4 text-green-600" />
             <AlertTitle className="text-green-600">Success</AlertTitle>
-            <AlertDescription className="text-green-600">{successMessage}</AlertDescription>
+            <AlertDescription className="text-green-600">
+              {successMessage}
+            </AlertDescription>
           </Alert>
         )}
 
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="flex-1 overflow-hidden"
+        >
           <div className="border-b px-4">
             <TabsList className="bg-transparent">
               {mode === "prepackaged" ? (
-                <TabsTrigger value="prepackaged">Pre-packaged Options</TabsTrigger>
+                <TabsTrigger value="prepackaged">
+                  Pre-packaged Options
+                </TabsTrigger>
               ) : (
                 <>
                   <TabsTrigger value="heat-pump">Heat Pumps</TabsTrigger>
@@ -181,23 +216,37 @@ export default function PriceEditorModal({
               <TabsContent value="prepackaged" className="mt-0">
                 <div className="space-y-4">
                   <p className="text-sm text-gray-500">
-                    Update the prices for pre-packaged HVAC solutions. Leave blank to use the original price.
+                    Update the prices for pre-packaged HVAC solutions. Leave
+                    blank to use the original price.
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {prepackagedData.map((item) => (
                       <div key={item.id} className="border rounded-lg p-4">
                         <h3 className="font-medium mb-2">{item.title}</h3>
                         <div className="flex items-center gap-2">
-                          <p className="text-sm text-gray-500">Original: ${item.originalPrice.toLocaleString()}</p>
+                          <p className="text-sm text-gray-500">
+                            Original: ${item.originalPrice.toLocaleString()}
+                          </p>
                           <div className="flex-1">
                             <div className="relative">
-                              <span className="absolute left-3 top-1/2 transform -translate-y-1/2">$</span>
+                              <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                                $
+                              </span>
                               <Input
                                 type="text"
                                 className="pl-8"
                                 placeholder={item.originalPrice.toLocaleString()}
-                                value={prepackagedPrices[item.id]?.toLocaleString() || ""}
-                                onChange={(e) => handlePrepackagedPriceChange(item.id, e.target.value)}
+                                value={
+                                  prepackagedPrices[
+                                    item.id
+                                  ]?.toLocaleString() || ""
+                                }
+                                onChange={(e) =>
+                                  handlePrepackagedPriceChange(
+                                    item.id,
+                                    e.target.value
+                                  )
+                                }
                               />
                             </div>
                           </div>
@@ -274,7 +323,10 @@ export default function PriceEditorModal({
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700" onClick={saveChanges}>
+            <Button
+              className="bg-amber-600 hover:bg-amber-700"
+              onClick={saveChanges}
+            >
               <Save className="h-4 w-4 mr-2" />
               Save Changes
             </Button>
@@ -282,7 +334,7 @@ export default function PriceEditorModal({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 interface PriceItem {
@@ -294,33 +346,45 @@ interface PriceItem {
 
 // Component for displaying a grid of price editors
 interface PriceEditorGridProps {
-  items: PriceItem[]
-  categoryId: string
-  prices: Record<string, number>
-  onChange: (categoryId: string, itemId: string, value: string) => void
+  items: PriceItem[];
+  categoryId: string;
+  prices: Record<string, number>;
+  onChange: (categoryId: string, itemId: string, value: string) => void;
 }
 
-function PriceEditorGrid({ items, categoryId, prices, onChange }: PriceEditorGridProps) {
+function PriceEditorGrid({
+  items,
+  categoryId,
+  prices,
+  onChange,
+}: PriceEditorGridProps) {
   return (
     <div className="space-y-4">
       <p className="text-sm text-gray-500">
-        Update the prices for {categoryId.replace("-", " ")} components. Leave blank to use the original price.
+        Update the prices for {categoryId.replace("-", " ")} components. Leave
+        blank to use the original price.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {items.map((item) => (
           <div key={item.id} className="border rounded-lg p-4">
             <h3 className="font-medium mb-2">{item.title}</h3>
             <div className="flex items-center gap-2">
-              <p className="text-sm text-gray-500">Original: ${item.price.toLocaleString()}</p>
+              <p className="text-sm text-gray-500">
+                Original: ${item.price.toLocaleString()}
+              </p>
               <div className="flex-1">
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2">$</span>
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                    $
+                  </span>
                   <Input
                     type="text"
                     className="pl-8"
                     placeholder={item.price.toLocaleString()}
                     value={prices?.[item.id]?.toLocaleString() || ""}
-                    onChange={(e) => onChange(categoryId, item.id, e.target.value)}
+                    onChange={(e) =>
+                      onChange(categoryId, item.id, e.target.value)
+                    }
                   />
                 </div>
               </div>
@@ -329,6 +393,5 @@ function PriceEditorGrid({ items, categoryId, prices, onChange }: PriceEditorGri
         ))}
       </div>
     </div>
-  )
+  );
 }
-

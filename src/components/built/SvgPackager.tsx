@@ -22,7 +22,7 @@ const SvgPackager = ({
   }
 
   return (
-    <div className="h-60 w-full rounded-lg flex items-center justify-center flex-wrap gap-4">
+    <div className="h-60 w-full rounded-lg flex items-center justify-center">
       {svgPaths?.map((path, index) => (
         <div
           key={index}

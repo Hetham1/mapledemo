@@ -1,7 +1,7 @@
-"use client"
-import Prepack from "@/components/built/prepack"
-import BuildPackageSection from "@/components/built/edit"
-import Waves from "@/components/built/landing2"
+"use client";
+import Prepack from "@/components/built/prepack";
+import BuildPackageSection from "@/components/built/edit";
+import Waves from "@/components/built/landing2";
 // import TabsDemo from "@/components/built/selectTabs";
 
 export default function Home() {
@@ -12,6 +12,5 @@ export default function Home() {
       <Prepack />
       <BuildPackageSection />
     </div>
-  )
+  );
 }
-

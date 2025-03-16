@@ -159,7 +159,7 @@ export default function UnifiedForm({
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center overflow-auto bg-black/50 backdrop-blur-sm">
       <div className="w-full max-w-[800px] bg-white dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-2xl">
-        <div className="flex justify-between items-center p-4 border-b bg-blue-600 text-white">
+        <div className="flex justify-between items-center p-4 border-b bg-amber-700 text-white">
           <h2 className="text-xl font-semibold">
             {formType === "package"
               ? `Request Quote for ${packageData?.title}`
@@ -202,7 +202,7 @@ export default function UnifiedForm({
                   {formData.selectedSize && (
                     <p className="text-xs font-medium mt-1">
                       Selected Size:{" "}
-                      <span className="text-blue-600">
+                      <span className="text-amber-600">
                         {formData.selectedSize}
                       </span>
                     </p>
@@ -236,7 +236,7 @@ export default function UnifiedForm({
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-medium mb-3 text-blue-600">
+              <h3 className="text-lg font-medium mb-3 text-amber-600">
                 Selected Items ({selectedItems.length})
               </h3>
 
@@ -247,7 +247,7 @@ export default function UnifiedForm({
                     className="flex justify-between items-center p-3 bg-white dark:bg-neutral-700 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                   >
                     <div>
-                      <h4 className="font-medium text-blue-600">
+                      <h4 className="font-medium text-amber-600">
                         {item.title}
                       </h4>
                       <p className="text-xs text-cyan-600 font-medium">
@@ -266,7 +266,7 @@ export default function UnifiedForm({
                 ))}
               </div>
 
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+              <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-100">
                 <p className="font-medium flex justify-between">
                   <span>Estimated Total:</span>
                   <span className="text-emerald-600 font-bold">
@@ -290,14 +290,14 @@ export default function UnifiedForm({
             packageData?.sizes &&
             packageData.sizes.length > 0 && (
               <div className="mb-4">
-                <label className="block text-sm font-medium text-blue-600 mb-1">
+                <label className="block text-sm font-medium text-amber-600 mb-1">
                   Select Size:
                 </label>
                 <select
                   name="selectedSize"
                   value={formData.selectedSize}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition-all"
                 >
                   {packageData.sizes.map((size) => (
                     <option key={size} value={size}>
@@ -310,7 +310,7 @@ export default function UnifiedForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">
+              <label className="block text-sm font-medium text-amber-600">
                 Full Name
               </label>
               <input
@@ -319,12 +319,12 @@ export default function UnifiedForm({
                 value={formData.fullName}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition-all"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">
+              <label className="block text-sm font-medium text-amber-600">
                 Email
               </label>
               <input
@@ -333,12 +333,12 @@ export default function UnifiedForm({
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition-all"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">
+              <label className="block text-sm font-medium text-amber-600">
                 Phone
               </label>
               <input
@@ -347,12 +347,12 @@ export default function UnifiedForm({
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition-all"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">
+              <label className="block text-sm font-medium text-amber-600">
                 Address
               </label>
               <input
@@ -361,12 +361,12 @@ export default function UnifiedForm({
                 value={formData.address}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition-all"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">
+              <label className="block text-sm font-medium text-amber-600">
                 Preferred Installation Date
               </label>
               <input
@@ -374,13 +374,13 @@ export default function UnifiedForm({
                 name="installationDate"
                 value={formData.installationDate}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition-all"
               />
             </div>
           </div>
 
           <div className="mt-4 space-y-2">
-            <label className="block text-sm font-medium text-blue-600">
+            <label className="block text-sm font-medium text-amber-600">
               Additional Notes
             </label>
             <textarea
@@ -388,7 +388,7 @@ export default function UnifiedForm({
               value={formData.additionalNotes}
               onChange={handleChange}
               rows={3}
-              className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+              className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition-all"
             ></textarea>
           </div>
 
@@ -402,10 +402,10 @@ export default function UnifiedForm({
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`px-4 py-2 bg-blue-600 text-white rounded-md transition-all shadow-md ${
+              className={`px-4 py-2 bg-amber-600 text-white rounded-md transition-all shadow-md ${
                 isSubmitting
                   ? "opacity-70 cursor-not-allowed"
-                  : "hover:bg-blue-700 hover:shadow-lg"
+                  : "hover:bg-amber-700 hover:shadow-lg"
               }`}
             >
               {isSubmitting ? "Submitting..." : "Submit Quote Request"}
