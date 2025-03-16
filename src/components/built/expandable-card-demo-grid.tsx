@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import type React from "react"
-import { useEffect, useId, useRef, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { useOutsideClick } from "@/hooks/use-outside-click"
-import UnifiedForm from "./form-demo"
+import Image from "next/image";
+import type React from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useOutsideClick } from "@/hooks/use-outside-click";
+import UnifiedForm from "./form-demo";
 
 // Define the Card type
 interface Card {
-  id: string
-  title: string
-  description: string
-  price: string
-  financing: string
-  sizes: string[]
-  components: string[]
-  src: string
-  ctaText: string
-  ctaLink: string
-  content: () => React.ReactNode
+  id: string;
+  title: string;
+  description: string;
+  price: string;
+  financing: string;
+  sizes: string[];
+  components: string[];
+  src: string;
+  ctaText: string;
+  ctaLink: string;
+  content: () => React.ReactNode;
 }
 
 // Card data with added IDs
@@ -35,7 +35,12 @@ const cards: Card[] = [
     src: "/photo_2025-03-03_17-16-43.jpg",
     ctaText: "Visit",
     ctaLink: "#",
-    content: () => <p>High-efficiency heating and cooling system designed for comfort and energy savings.</p>,
+    content: () => (
+      <p>
+        High-efficiency heating and cooling system designed for comfort and
+        energy savings.
+      </p>
+    ),
   },
   {
     id: "premium-comfort",
@@ -44,11 +49,20 @@ const cards: Card[] = [
     price: "4,999",
     financing: "Financing available at $129/month",
     sizes: ["Medium", "Large", "Extra Large"],
-    components: ["Smart Thermostat", "Multi-Stage Compressor", "High-Efficiency Filter"],
-    src: "/photo_2025-03-03_17-16-43.jpg",
+    components: [
+      "Smart Thermostat",
+      "Multi-Stage Compressor",
+      "High-Efficiency Filter",
+    ],
+    src: "/photo_2025-03-03_17-17-03.jpg",
     ctaText: "Visit",
     ctaLink: "#",
-    content: () => <p>Advanced climate control system with superior air purification technology.</p>,
+    content: () => (
+      <p>
+        Advanced climate control system with superior air purification
+        technology.
+      </p>
+    ),
   },
   {
     id: "eco-friendly",
@@ -58,10 +72,15 @@ const cards: Card[] = [
     financing: "Financing available at $149/month",
     sizes: ["Small", "Medium", "Large"],
     components: ["Heat Pump", "Variable Speed Fan", "Smart Sensor"],
-    src: "/photo_2025-03-03_17-16-43.jpg",
+    src: "/photo_2025-03-03_17-16-37.jpg",
     ctaText: "Visit",
     ctaLink: "#",
-    content: () => <p>A high-performance heat pump system for reduced energy bills and sustainability.</p>,
+    content: () => (
+      <p>
+        A high-performance heat pump system for reduced energy bills and
+        sustainability.
+      </p>
+    ),
   },
   {
     id: "ultimate-climate",
@@ -71,10 +90,15 @@ const cards: Card[] = [
     financing: "Financing available at $199/month",
     sizes: ["Medium", "Large", "Extra Large"],
     components: ["AI Thermostat", "Zoning System", "Air Purifier"],
-    src: "/photo_2025-03-03_17-16-43.jpg",
+    src: "/photo_2025-03-03_17-16-47.jpg",
     ctaText: "Visit",
     ctaLink: "#",
-    content: () => <p>Smart AI-powered system that optimizes heating and cooling for ultimate comfort.</p>,
+    content: () => (
+      <p>
+        Smart AI-powered system that optimizes heating and cooling for ultimate
+        comfort.
+      </p>
+    ),
   },
   {
     id: "budget-friendly",
@@ -83,11 +107,20 @@ const cards: Card[] = [
     price: "2,499",
     financing: "Financing available at $79/month",
     sizes: ["Small", "Medium"],
-    components: ["Basic Thermostat", "Single-Stage Compressor", "Standard Air Filter"],
-    src: "/photo_2025-03-03_17-16-43.jpg",
+    components: [
+      "Basic Thermostat",
+      "Single-Stage Compressor",
+      "Standard Air Filter",
+    ],
+    src: "/MicrosoftTeams-image-17.webp",
     ctaText: "Visit",
     ctaLink: "#",
-    content: () => <p>Affordable and reliable heating and cooling system for budget-conscious homeowners.</p>,
+    content: () => (
+      <p>
+        Affordable and reliable heating and cooling system for budget-conscious
+        homeowners.
+      </p>
+    ),
   },
   {
     id: "luxury-home",
@@ -96,60 +129,73 @@ const cards: Card[] = [
     price: "12,999",
     financing: "Financing available at $299/month",
     sizes: ["Large", "Extra Large"],
-    components: ["Smart AI Thermostat", "Ultra-Quiet Compressor", "UV Air Purifier"],
-    src: "/photo_2025-03-03_17-16-43.jpg",
+    components: [
+      "Smart AI Thermostat",
+      "Ultra-Quiet Compressor",
+      "UV Air Purifier",
+    ],
+    src: "/61VFBkYfiJL.jpg",
     ctaText: "Visit",
     ctaLink: "#",
-    content: () => <p>Top-of-the-line climate control for unmatched luxury and energy efficiency.</p>,
+    content: () => (
+      <p>
+        Top-of-the-line climate control for unmatched luxury and energy
+        efficiency.
+      </p>
+    ),
   },
-]
+];
 
 export default function ExpandableCardDemo() {
-  const [active, setActive] = useState<Card | boolean | null>(null)
-  const [showForm, setShowForm] = useState<boolean>(false)
-  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(null)
-  const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({})
-  const id = useId()
-  const ref = useRef<HTMLDivElement | null>(null)
+  const [active, setActive] = useState<Card | boolean | null>(null);
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(
+    null
+  );
+  const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>(
+    {}
+  );
+  const id = useId();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         if (showForm) {
-          setShowForm(false)
+          setShowForm(false);
         } else {
-          setActive(false)
+          setActive(false);
         }
       }
     }
 
     if ((active && typeof active === "object") || showForm) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
 
-    window.addEventListener("keydown", onKeyDown)
+    window.addEventListener("keydown", onKeyDown);
 
-    return () => window.removeEventListener("keydown", onKeyDown)
-  }, [active, showForm])
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [active, showForm]);
 
   useOutsideClick(ref as React.RefObject<HTMLDivElement>, () => {
     if (!showForm) {
-      setActive(null)
+      setActive(null);
     }
-  })
+  });
 
   const openForm = (card: Card) => {
-    setSelectedPackageId(card.id)
-    setShowForm(true)
-    setActive(null) // Close the expanded card
-  }
+    setSelectedPackageId(card.id);
+    setShowForm(true);
+    setActive(null); // Close the expanded card
+  };
 
   const closeForm = () => {
-    setShowForm(false)
-    setSelectedPackageId(null)
-  }
+    setShowForm(false);
+    setSelectedPackageId(null);
+  };
 
   return (
     <div className="overflow-hidden">
@@ -194,8 +240,12 @@ export default function ExpandableCardDemo() {
               </motion.div>
               {/* New Price, Financing, Size, and Components Section */}
               <div className="p-4 overflow-auto max-h-[300px]">
-                <h3 className="font-semibold text-lg text-neutral-800 dark:text-white">{active.title}</h3>
-                <p className="text-green-500 text-lg font-bold">${active.price}</p>
+                <h3 className="font-semibold text-lg text-neutral-800 dark:text-white">
+                  {active.title}
+                </h3>
+                <p className="text-green-500 text-lg font-bold">
+                  ${active.price}
+                </p>
                 <p className="text-sm text-gray-500">{active.financing}</p>
                 <div className="mt-3">
                   <h4 className="font-medium">Select Size:</h4>
@@ -206,7 +256,7 @@ export default function ExpandableCardDemo() {
                       setSelectedSizes((prev) => ({
                         ...prev,
                         [active.id]: e.target.value,
-                      }))
+                      }));
                     }}
                   >
                     {active.sizes.map((size) => (
@@ -227,7 +277,9 @@ export default function ExpandableCardDemo() {
               </div>
               {/* Content Section (Already Scrollable) */}
               <div className="pt-4 px-4 pb-10 overflow-auto max-h-[200px] text-sm text-neutral-600 dark:text-neutral-400">
-                {typeof active.content === "function" ? active.content() : active.content}
+                {typeof active.content === "function"
+                  ? active.content()
+                  : active.content}
               </div>
               {/* New Request Quote Button */}
               <div className="px-4 pb-4">
@@ -235,7 +287,8 @@ export default function ExpandableCardDemo() {
                   onClick={() => openForm(active)}
                   className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 >
-                  Request Quote for {selectedSizes[active.id] || active.sizes[0]} Size
+                  Request Quote for{" "}
+                  {selectedSizes[active.id] || active.sizes[0]} Size
                 </button>
               </div>
             </motion.div>
@@ -246,7 +299,8 @@ export default function ExpandableCardDemo() {
         <UnifiedForm
           packageData={cards.find((card) => card.id === selectedPackageId)}
           selectedSize={
-            selectedSizes[selectedPackageId] || cards.find((card) => card.id === selectedPackageId)?.sizes[0]
+            selectedSizes[selectedPackageId] ||
+            cards.find((card) => card.id === selectedPackageId)?.sizes[0]
           }
           onClose={closeForm}
           formType="package"
@@ -289,7 +343,7 @@ export default function ExpandableCardDemo() {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 export const CloseIcon = () => (
@@ -309,5 +363,4 @@ export const CloseIcon = () => (
     <path d="M18 6l-12 12" />
     <path d="M6 6l12 12" />
   </motion.svg>
-)
-
+);

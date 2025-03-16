@@ -1,13 +1,26 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Check, ChevronLeft, ChevronRight, PackageCheck, RefreshCw } from "lucide-react"
-import Image from "next/image"
+import { useState, useEffect } from "react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  PackageCheck,
+  RefreshCw,
+} from "lucide-react";
+import Image from "next/image";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-import UnifiedForm from "@/components/built/form-demo"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import UnifiedForm from "@/components/built/form-demo";
 import {
   heatPumpData as originalHeatPumpData,
   furnaceData as originalFurnaceData,
@@ -15,7 +28,7 @@ import {
   humidifierData as originalHumidifierData,
   airCleanerData as originalAirCleanerData,
   warrantyData as originalWarrantyData,
-} from "@/lib/hvac-data"
+} from "@/lib/hvac-data";
 
 // Define the categories with colors
 const packageCategories = [
@@ -61,11 +74,14 @@ const packageCategories = [
     options: originalWarrantyData,
     color: "yellow",
   },
-]
+];
 
 // Helper function to get color classes
 function getColorClasses(color: string) {
-  const colorMap: Record<string, { text: string; bg: string; bgLight: string; border: string; hover: string }> = {
+  const colorMap: Record<
+    string,
+    { text: string; bg: string; bgLight: string; border: string; hover: string }
+  > = {
     blue: {
       text: "text-blue-600",
       bg: "bg-blue-600",
@@ -108,9 +124,9 @@ function getColorClasses(color: string) {
       border: "border-yellow-600",
       hover: "hover:bg-yellow-700",
     },
-  }
+  };
 
-  return colorMap[color] || colorMap.blue
+  return colorMap[color] || colorMap.blue;
 }
 
 interface Option {
@@ -134,15 +150,15 @@ interface Selection {
 }
 
 interface PackageBuilderProps {
-  customPrices: Record<string, Record<string, number>> | null
+  customPrices: Record<string, Record<string, number>> | null;
 }
 
 export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
-  const [currentStep, setCurrentStep] = useState(0)
-  const [selections, setSelections] = useState<Record<string, Selection>>({})
-  const [showSummary, setShowSummary] = useState(false)
-  const [showForm, setShowForm] = useState(false)
-  const [categories, setCategories] = useState(packageCategories)
+  const [currentStep, setCurrentStep] = useState(0);
+  const [selections, setSelections] = useState<Record<string, Selection>>({});
+  const [showSummary, setShowSummary] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [categories, setCategories] = useState(packageCategories);
 
   // Apply custom prices if available
   useEffect(() => {
@@ -154,24 +170,24 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
               return {
                 ...option,
                 price: customPrices[category.id][option.id],
-              }
+              };
             }
-            return option
-          })
+            return option;
+          });
           return {
             ...category,
             options: updatedOptions,
-          }
+          };
         }
-        return category
-      })
-      setCategories(updatedCategories)
+        return category;
+      });
+      setCategories(updatedCategories);
     }
-  }, [customPrices])
+  }, [customPrices]);
 
-  const isLastStep = currentStep === categories.length - 1
-  const currentCategory = categories[currentStep]
-  const currentColorClasses = getColorClasses(currentCategory.color)
+  const isLastStep = currentStep === categories.length - 1;
+  const currentCategory = categories[currentStep];
+  const currentColorClasses = getColorClasses(currentCategory.color);
 
   const handleSelect = (option: Option) => {
     setSelections({
@@ -183,47 +199,56 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
         price: option.price,
         category: currentCategory.id,
       },
-    })
-  }
+    });
+  };
 
   const handleNext = () => {
     if (isLastStep) {
-      setShowSummary(true)
+      setShowSummary(true);
     } else {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     }
-  }
+  };
 
   const handleReset = () => {
-    setSelections({})
-    setCurrentStep(0)
-    setShowSummary(false)
-  }
+    setSelections({});
+    setCurrentStep(0);
+    setShowSummary(false);
+  };
 
   const calculateTotal = () => {
-    return Object.values(selections).reduce((total: number, item: Selection) => total + (item.price || 0), 0)
-  }
+    return Object.values(selections).reduce(
+      (total: number, item: Selection) => total + (item.price || 0),
+      0
+    );
+  };
 
   const isOptionSelected = (option: Option) => {
-    return selections[currentCategory?.id]?.id === option.id
-  }
+    return selections[currentCategory?.id]?.id === option.id;
+  };
 
   const isStepComplete = () => {
-    return selections[currentCategory?.id] !== undefined
-  }
+    return selections[currentCategory?.id] !== undefined;
+  };
 
   const getSelectedItemsArray = () => {
-    return Object.values(selections)
-  }
+    return Object.values(selections);
+  };
 
   if (showForm) {
-    return <UnifiedForm selectedItems={getSelectedItemsArray()} onClose={() => setShowForm(false)} formType="custom" />
+    return (
+      <UnifiedForm
+        selectedItems={getSelectedItemsArray()}
+        onClose={() => setShowForm(false)}
+        formType="custom"
+      />
+    );
   }
 
   if (showSummary) {
@@ -235,47 +260,67 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
               <PackageCheck className="h-7 w-7" />
               <h2 className="text-2xl font-bold">Your Custom HVAC Package</h2>
             </div>
-            <p className="mt-1 opacity-80">Review your selections and submit to request a quote</p>
+            <p className="mt-1 opacity-80">
+              Review your selections and submit to request a quote
+            </p>
           </div>
           <CardContent className="p-6">
             <div className="space-y-6">
               {categories.map((category) => {
-                const selection = selections[category.id]
-                const colorClasses = getColorClasses(category.color)
+                const selection = selections[category.id];
+                const colorClasses = getColorClasses(category.color);
                 return (
-                  <div key={category.id} className="rounded-lg bg-white p-4 shadow-sm">
-                    <h3 className={`font-medium ${colorClasses.text} mb-2`}>{category.name}</h3>
+                  <div
+                    key={category.id}
+                    className="rounded-lg bg-white p-4 shadow-sm"
+                  >
+                    <h3 className={`font-medium ${colorClasses.text} mb-2`}>
+                      {category.name}
+                    </h3>
                     {selection ? (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="h-16 w-16 relative rounded-lg overflow-hidden border shadow-sm">
                             <Image
-                              src={selection.image || "/placeholder.svg?height=64&width=64"}
+                              src={
+                                selection.image ||
+                                "/placeholder.svg?height=64&width=64"
+                              }
                               alt={selection.title}
                               fill
                               className="object-cover"
                             />
                           </div>
                           <div>
-                            <p className="font-semibold text-lg">{selection.title}</p>
-                            <p className="text-sm text-gray-500">{selection.description}</p>
+                            <p className="font-semibold text-lg">
+                              {selection.title}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {selection.description}
+                            </p>
                           </div>
                         </div>
-                        <p className={`font-bold text-lg ${colorClasses.text}`}>${selection.price?.toLocaleString()}</p>
+                        <p className={`font-bold text-lg ${colorClasses.text}`}>
+                          ${selection.price?.toLocaleString()}
+                        </p>
                       </div>
                     ) : (
                       <p className="text-gray-500 italic">No selection made</p>
                     )}
                   </div>
-                )
+                );
               })}
 
               <div className="flex justify-between items-center pt-4 p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="text-xl font-bold text-blue-600">Total Package Price</h3>
+                  <h3 className="text-xl font-bold text-blue-600">
+                    Total Package Price
+                  </h3>
                   <p className="text-sm text-gray-500">Installation included</p>
                 </div>
-                <p className="text-2xl font-bold text-blue-600">${calculateTotal().toLocaleString()}</p>
+                <p className="text-2xl font-bold text-blue-600">
+                  ${calculateTotal().toLocaleString()}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -297,37 +342,46 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
           </CardFooter>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
     <div className="max-w-5xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
         <h2 className="text-2xl font-semibold">
-          <span className={currentColorClasses.text}>Step {currentStep + 1}:</span> {currentCategory.name}
+          <span className={currentColorClasses.text}>
+            Step {currentStep + 1}:
+          </span>{" "}
+          {currentCategory.name}
         </h2>
         <div className="flex items-center gap-1">
           {categories.map((category, index) => {
-            const isActive = index === currentStep
-            const isCompleted = index < currentStep || selections[category.id]
+            const isActive = index === currentStep;
+            const isCompleted = index < currentStep || selections[category.id];
             return (
               <div
                 key={index}
                 className={cn(
                   "h-2 w-10 rounded-full transition-all duration-300",
-                  isActive ? "bg-blue-500" : isCompleted ? "bg-emerald-500" : "bg-gray-200",
+                  isActive
+                    ? "bg-blue-500"
+                    : isCompleted
+                    ? "bg-emerald-500"
+                    : "bg-gray-200"
                 )}
               />
-            )
+            );
           })}
         </div>
       </div>
 
-      <p className="text-gray-500 mb-8 text-center md:text-left">{currentCategory.description}</p>
+      <p className="text-gray-500 mb-8 text-center md:text-left">
+        {currentCategory.description}
+      </p>
 
       <div className="grid md:grid-cols-3 gap-6 mb-10">
         {currentCategory.options.map((option) => {
-          const isSelected = isOptionSelected(option)
+          const isSelected = isOptionSelected(option);
           return (
             <Card
               key={option.id}
@@ -335,7 +389,7 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
                 "relative overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer",
                 isSelected
                   ? `${currentColorClasses.bgLight} border-2 ${currentColorClasses.border} shadow-md`
-                  : "bg-white hover:bg-gray-50",
+                  : "bg-white hover:bg-gray-50"
               )}
               onClick={() => handleSelect(option)}
             >
@@ -353,7 +407,9 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
               <CardContent className="flex justify-center pb-2">
                 <div className="relative h-32 w-32 transition-transform duration-300">
                   <Image
-                    src={option.image || "/placeholder.svg?height=128&width=128"}
+                    src={
+                      option.image || "/placeholder.svg?height=128&width=128"
+                    }
                     alt={option.title}
                     fill
                     className="object-contain"
@@ -361,12 +417,14 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
                 </div>
               </CardContent>
               <CardFooter className="pt-0">
-                <p className={`text-xl font-bold w-full text-center ${currentColorClasses.text}`}>
+                <p
+                  className={`text-xl font-bold w-full text-center ${currentColorClasses.text}`}
+                >
                   ${option.price?.toLocaleString()}
                 </p>
               </CardFooter>
             </Card>
-          )
+          );
         })}
       </div>
 
@@ -391,6 +449,5 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
         </Button>
       </div>
     </div>
-  )
+  );
 }
-
