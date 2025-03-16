@@ -29,7 +29,7 @@ const cards: Card[] = [
     title: "Essential Comfort Bundle",
     description: "5 Year Warranty",
     price: "3,499",
-    financing: "Financing available at $99/month",
+    financing: "$99/month",
     sizes: ["Small", "Medium", "Large"],
     components: ["Thermostat", "Air Handler", "Compressor"],
     src: "/photo_2025-03-03_17-16-43.jpg",
@@ -47,7 +47,7 @@ const cards: Card[] = [
     title: "Premium Comfort Bundle",
     description: "7 Year Warranty",
     price: "4,999",
-    financing: "Financing available at $129/month",
+    financing: "$129/month",
     sizes: ["Medium", "Large", "Extra Large"],
     components: [
       "Smart Thermostat",
@@ -69,7 +69,7 @@ const cards: Card[] = [
     title: "Eco-Friendly Heat Pump",
     description: "Energy Star Certified",
     price: "5,299",
-    financing: "Financing available at $149/month",
+    financing: "$149/month",
     sizes: ["Small", "Medium", "Large"],
     components: ["Heat Pump", "Variable Speed Fan", "Smart Sensor"],
     src: "/photo_2025-03-03_17-16-37.jpg",
@@ -87,7 +87,7 @@ const cards: Card[] = [
     title: "Ultimate Climate Control",
     description: "10 Year Warranty",
     price: "7,999",
-    financing: "Financing available at $199/month",
+    financing: "$199/month",
     sizes: ["Medium", "Large", "Extra Large"],
     components: ["AI Thermostat", "Zoning System", "Air Purifier"],
     src: "/photo_2025-03-03_17-16-47.jpg",
@@ -105,7 +105,7 @@ const cards: Card[] = [
     title: "Budget-Friendly HVAC",
     description: "3 Year Warranty",
     price: "2,499",
-    financing: "Financing available at $79/month",
+    financing: "$79/month",
     sizes: ["Small", "Medium"],
     components: [
       "Basic Thermostat",
@@ -127,7 +127,7 @@ const cards: Card[] = [
     title: "Luxury Home Comfort",
     description: "Lifetime Warranty",
     price: "12,999",
-    financing: "Financing available at $299/month",
+    financing: `$299/month`,
     sizes: ["Large", "Extra Large"],
     components: [
       "Smart AI Thermostat",
@@ -246,7 +246,12 @@ export default function ExpandableCardDemo() {
                 <p className="text-green-500 text-lg font-bold">
                   ${active.price}
                 </p>
-                <p className="text-sm text-gray-500">{active.financing}</p>
+                <span className="text-sm text-gray-500 font-semibold">
+                  Financing available at{" "}
+                </span>
+                <span className="text-sm text-black font-bold">
+                  {active.financing}
+                </span>
                 <div className="mt-3">
                   <h4 className="font-medium">Select Size:</h4>
                   <select

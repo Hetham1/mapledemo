@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { CloseIcon } from "./close-icon"
-import Image from "next/image"
+import type React from "react";
+import { useState } from "react";
+import { CloseIcon } from "./close-icon";
+import Image from "next/image";
 
 type FormData = {
   fullName: string;
@@ -22,7 +22,7 @@ interface FormProps {
     description?: string;
     price?: string | number;
     category?: string;
-  }[]
+  }[];
   packageData?: {
     id: string;
     title: string;
@@ -34,13 +34,19 @@ interface FormProps {
     src?: string;
     category?: string;
     image?: string;
-  }
+  };
   selectedSize?: string;
   onClose: () => void;
   formType: "package" | "custom";
 }
 
-export default function UnifiedForm({ selectedItems = [], packageData, selectedSize, onClose, formType }: FormProps) {
+export default function UnifiedForm({
+  selectedItems = [],
+  packageData,
+  selectedSize,
+  onClose,
+  formType,
+}: FormProps) {
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
@@ -49,20 +55,24 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
     installationDate: "",
     additionalNotes: "",
     selectedSize: selectedSize || packageData?.sizes?.[0] || "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError(null);
-  
+
     try {
       // Calculate estimated total
       const estimatedTotal =
@@ -71,12 +81,13 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
             ? Number.parseFloat(packageData.price.replace(/,/g, ""))
             : packageData?.price || 0
           : selectedItems.reduce((total, item) => {
-              const itemPrice = typeof item.price === "string" 
-                ? Number.parseFloat(item.price.replace(/,/g, ""))
-                : item.price || 0;
+              const itemPrice =
+                typeof item.price === "string"
+                  ? Number.parseFloat(item.price.replace(/,/g, ""))
+                  : item.price || 0;
               return total + itemPrice;
             }, 0);
-  
+
       // Type the request data
       interface EmailRequestData {
         formType: "package" | "custom";
@@ -85,43 +96,47 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
         formData: typeof formData;
         estimatedTotal: number;
       }
-  
+
       // Prepare data to send
       const dataToSend: EmailRequestData = {
         formType,
         packageData: formType === "package" ? packageData : null,
         selectedItems: formType === "custom" ? selectedItems : [],
         formData,
-        estimatedTotal
+        estimatedTotal,
       };
-  
+
       // Send the data to our API route
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
+      const response = await fetch("/api/send-email", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(dataToSend),
       });
-  
+
       interface ApiResponse {
         success: boolean;
         id?: string;
         error?: string;
       }
-  
+
       const result: ApiResponse = await response.json();
-  
+
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Failed to send email');
+        throw new Error(result.error || "Failed to send email");
       }
-  
+
       // Show success message
-      alert("Your quote request has been submitted successfully and sent via email!");
+      alert(
+        "Your quote request has been submitted successfully and sent via email!"
+      );
       onClose();
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitError(error instanceof Error ? error.message : 'An unknown error occurred');
+      console.error("Error submitting form:", error);
+      setSubmitError(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -134,9 +149,10 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
         ? Number.parseFloat(packageData.price.replace(/,/g, ""))
         : packageData?.price || 0
       : selectedItems.reduce((total, item) => {
-          const itemPrice = typeof item.price === "string" 
-            ? Number.parseFloat(item.price.replace(/,/g, ""))
-            : item.price || 0;
+          const itemPrice =
+            typeof item.price === "string"
+              ? Number.parseFloat(item.price.replace(/,/g, ""))
+              : item.price || 0;
           return total + itemPrice;
         }, 0);
 
@@ -145,7 +161,9 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
       <div className="w-full max-w-[800px] bg-white dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-2xl">
         <div className="flex justify-between items-center p-4 border-b bg-blue-600 text-white">
           <h2 className="text-xl font-semibold">
-            {formType === "package" ? `Request Quote for ${packageData?.title}` : "Request Quote for Selected Items"}
+            {formType === "package"
+              ? `Request Quote for ${packageData?.title}`
+              : "Request Quote for Selected Items"}
           </h2>
           <button
             onClick={onClose}
@@ -163,19 +181,40 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
                 <div>
                   <h3 className="text-lg font-medium">{packageData.title}</h3>
                   <p className="text-green-600 font-bold text-xl">
-                    ${typeof packageData.price === "string" ? packageData.price : packageData.price?.toLocaleString()}
+                    $
+                    {typeof packageData.price === "string"
+                      ? packageData.price
+                      : packageData.price?.toLocaleString()}
                   </p>
-                  {packageData.financing && <p className="text-xs text-gray-500">{packageData.financing}</p>}
-                  <p className="text-xs text-gray-600 dark:text-gray-400">{packageData.description}</p>
+                  {packageData.financing && (
+                    <div>
+                      <span className="text-xs text-gray-500 font-semibold">
+                        Financing available at{" "}
+                      </span>
+                      <span className="text-xs text-gray-700 font-bold">
+                        {packageData.financing}
+                      </span>
+                    </div>
+                  )}
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    {packageData.description}
+                  </p>
                   {formData.selectedSize && (
                     <p className="text-xs font-medium mt-1">
-                      Selected Size: <span className="text-blue-600">{formData.selectedSize}</span>
+                      Selected Size:{" "}
+                      <span className="text-blue-600">
+                        {formData.selectedSize}
+                      </span>
                     </p>
                   )}
                 </div>
                 <div className="mt-1 md:mt-0">
                   <Image
-                    src={packageData.src || packageData.image || "/placeholder.svg?height=80&width=80"}
+                    src={
+                      packageData.src ||
+                      packageData.image ||
+                      "/placeholder.svg?height=80&width=80"
+                    }
                     alt={packageData.title}
                     width={80}
                     height={80}
@@ -197,7 +236,9 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-medium mb-3 text-blue-600">Selected Items ({selectedItems.length})</h3>
+              <h3 className="text-lg font-medium mb-3 text-blue-600">
+                Selected Items ({selectedItems.length})
+              </h3>
 
               <div className="space-y-3">
                 {selectedItems.map((item) => (
@@ -206,12 +247,20 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
                     className="flex justify-between items-center p-3 bg-white dark:bg-neutral-700 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                   >
                     <div>
-                      <h4 className="font-medium text-blue-600">{item.title}</h4>
-                      <p className="text-xs text-cyan-600 font-medium">{item.category}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-300">{item.description}</p>
+                      <h4 className="font-medium text-blue-600">
+                        {item.title}
+                      </h4>
+                      <p className="text-xs text-cyan-600 font-medium">
+                        {item.category}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-300">
+                        {item.description}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-emerald-600">${item.price?.toLocaleString()}</p>
+                      <p className="font-bold text-emerald-600">
+                        ${item.price?.toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -220,37 +269,50 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
               <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
                 <p className="font-medium flex justify-between">
                   <span>Estimated Total:</span>
-                  <span className="text-emerald-600 font-bold">${estimatedTotal.toLocaleString()}</span>
+                  <span className="text-emerald-600 font-bold">
+                    ${estimatedTotal.toLocaleString()}
+                  </span>
                 </p>
-                <p className="text-xs text-gray-500 mt-1">Final pricing will be determined after consultation</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Final pricing will be determined after consultation
+                </p>
               </div>
             </>
           )}
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4 overflow-auto max-h-[60vh]">
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 overflow-auto max-h-[60vh]"
+        >
           {/* Size selection for package form */}
-          {formType === "package" && packageData?.sizes && packageData.sizes.length > 0 && (
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-blue-600 mb-1">Select Size:</label>
-              <select
-                name="selectedSize"
-                value={formData.selectedSize}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-              >
-                {packageData.sizes.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          {formType === "package" &&
+            packageData?.sizes &&
+            packageData.sizes.length > 0 && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-blue-600 mb-1">
+                  Select Size:
+                </label>
+                <select
+                  name="selectedSize"
+                  value={formData.selectedSize}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+                >
+                  {packageData.sizes.map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">Full Name</label>
+              <label className="block text-sm font-medium text-blue-600">
+                Full Name
+              </label>
               <input
                 type="text"
                 name="fullName"
@@ -262,7 +324,9 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">Email</label>
+              <label className="block text-sm font-medium text-blue-600">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -274,7 +338,9 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">Phone</label>
+              <label className="block text-sm font-medium text-blue-600">
+                Phone
+              </label>
               <input
                 type="tel"
                 name="phone"
@@ -286,66 +352,75 @@ export default function UnifiedForm({ selectedItems = [], packageData, selectedS
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-blue-600">Address</label>
+              <label className="block text-sm font-medium text-blue-600">
+                Address
+              </label>
               <input
                 type="text"
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"/>
-                </div>
-    
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-600">Preferred Installation Date</label>
-                  <input
-                    type="date"
-                    name="installationDate"
-                    value={formData.installationDate}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-                  />
-                </div>
-              </div>
-    
-              <div className="mt-4 space-y-2">
-                <label className="block text-sm font-medium text-blue-600">Additional Notes</label>
-                <textarea
-                  name="additionalNotes"
-                  value={formData.additionalNotes}
-                  onChange={handleChange}
-                  rows={3}
-                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-                ></textarea>
-              </div>
-    
-              {submitError && (
-                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-600">
-                  <p className="text-sm">{submitError}</p>
-                </div>
-              )}
-    
-              <div className="mt-6 flex gap-3">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`px-4 py-2 bg-blue-600 text-white rounded-md transition-all shadow-md ${
-                    isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-700 hover:shadow-lg"
-                  }`}
-                >
-                  {isSubmitting ? "Submitting..." : "Submit Quote Request"}
-                </button>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  disabled={isSubmitting}
-                  className="px-4 py-2 border border-gray-200 rounded-md hover:bg-gray-50 transition-all"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-blue-600">
+                Preferred Installation Date
+              </label>
+              <input
+                type="date"
+                name="installationDate"
+                value={formData.installationDate}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+              />
+            </div>
           </div>
-        </div>
-      )
-    }
+
+          <div className="mt-4 space-y-2">
+            <label className="block text-sm font-medium text-blue-600">
+              Additional Notes
+            </label>
+            <textarea
+              name="additionalNotes"
+              value={formData.additionalNotes}
+              onChange={handleChange}
+              rows={3}
+              className="w-full p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+            ></textarea>
+          </div>
+
+          {submitError && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-600">
+              <p className="text-sm">{submitError}</p>
+            </div>
+          )}
+
+          <div className="mt-6 flex gap-3">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`px-4 py-2 bg-blue-600 text-white rounded-md transition-all shadow-md ${
+                isSubmitting
+                  ? "opacity-70 cursor-not-allowed"
+                  : "hover:bg-blue-700 hover:shadow-lg"
+              }`}
+            >
+              {isSubmitting ? "Submitting..." : "Submit Quote Request"}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={isSubmitting}
+              className="px-4 py-2 border border-gray-200 rounded-md hover:bg-gray-50 transition-all"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

@@ -52,11 +52,11 @@ export const WavyBackground = ({
   const waveColors = React.useMemo(
     () =>
       colors ?? [
-        "#0ea5e9", // Cooling - Sky Blue
-        "#2563eb", // Cooling - Deep Blue
-        "#f43f5e", // Heating - Warm Red
-        "#f97316", // Heating - Orange
-        "#fb923c", // Heating - Light Orange
+        "#ff7e00", // Deep Orange (primary)
+        "#0891b2", // Warm Orange
+        "#dc2f02", // Teal Blue
+        "#2a9d8f", // Teal Green
+        "#e85d04", // Red-Orange
       ],
     [colors]
   );
