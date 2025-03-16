@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { HoveredLink, MenuItem } from "../ui/navbar-menu";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -15,7 +14,7 @@ export default function Navbartop() {
 
 function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
-
+  console.log(active);
   return (
     <motion.div
       className={cn(

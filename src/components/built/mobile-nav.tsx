@@ -11,7 +11,6 @@ import {
   ChevronUp,
   Home,
   Info,
-  Settings,
   Phone,
   Package,
   MessageCircle,
