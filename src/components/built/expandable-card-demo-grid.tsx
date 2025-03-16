@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import type React from "react";
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import UnifiedForm from "./form-demo";
+import SvgPackager from "./SvgPackager";
 
 // Define the Card type
 interface Card {
@@ -17,6 +17,8 @@ interface Card {
   sizes: string[];
   components: string[];
   src: string;
+  svgPaths?: string[];
+  renderImage: () => React.ReactNode;
   ctaText: string;
   ctaLink: string;
   content: () => React.ReactNode;
@@ -33,6 +35,10 @@ const cards: Card[] = [
     sizes: ["Small", "Medium", "Large"],
     components: ["Thermostat", "Air Handler", "Compressor"],
     src: "/photo_2025-03-03_17-16-43.jpg",
+    svgPaths: [],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -55,6 +61,10 @@ const cards: Card[] = [
       "High-Efficiency Filter",
     ],
     src: "/photo_2025-03-03_17-17-03.jpg",
+    svgPaths: ["/thermometer-svgrepo-com.svg", "/Furnace.svg", "/Humid.svg"],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -73,6 +83,10 @@ const cards: Card[] = [
     sizes: ["Small", "Medium", "Large"],
     components: ["Heat Pump", "Variable Speed Fan", "Smart Sensor"],
     src: "/photo_2025-03-03_17-16-37.jpg",
+    svgPaths: ["/thermometer-svgrepo-com.svg", "/ac-unit-svgrepo-com.svg"],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -91,6 +105,10 @@ const cards: Card[] = [
     sizes: ["Medium", "Large", "Extra Large"],
     components: ["AI Thermostat", "Zoning System", "Air Purifier"],
     src: "/photo_2025-03-03_17-16-47.jpg",
+    svgPaths: ["/thermometer-svgrepo-com.svg", "/ac-unit-svgrepo-com.svg"],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -113,6 +131,10 @@ const cards: Card[] = [
       "Standard Air Filter",
     ],
     src: "/MicrosoftTeams-image-17.webp",
+    svgPaths: ["/thermometer-svgrepo-com.svg", "/ac-unit-svgrepo-com.svg"],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -135,6 +157,10 @@ const cards: Card[] = [
       "UV Air Purifier",
     ],
     src: "/61VFBkYfiJL.jpg",
+    svgPaths: ["/thermometer-svgrepo-com.svg", "/ac-unit-svgrepo-com.svg"],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -229,14 +255,7 @@ export default function ExpandableCardDemo() {
               className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
-                <Image
-                  priority
-                  width={200}
-                  height={200}
-                  src={active.src || "/placeholder.svg?height=200&width=200"}
-                  alt={active.title}
-                  className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
-                />
+                {active.renderImage()}
               </motion.div>
               {/* New Price, Financing, Size, and Components Section */}
               <div className="p-4 overflow-auto max-h-[300px]">
@@ -321,13 +340,7 @@ export default function ExpandableCardDemo() {
           >
             <div className="flex gap-4 flex-col w-full">
               <motion.div layoutId={`image-${card.title}-${id}`}>
-                <Image
-                  width={100}
-                  height={100}
-                  src={card.src || "/placeholder.svg?height=100&width=100"}
-                  alt={card.title}
-                  className="h-60 w-full rounded-lg object-cover object-top"
-                />
+                {card.renderImage()}
               </motion.div>
               <div className="flex justify-center items-center flex-col">
                 <motion.h3
