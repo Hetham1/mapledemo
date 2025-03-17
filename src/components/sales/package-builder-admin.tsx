@@ -449,14 +449,25 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
           Previous
         </Button>
 
-        <Button
-          onClick={handleNext}
-          disabled={!isStepComplete()}
-          className={`${currentColorClasses.bg} ${currentColorClasses.hover} text-white transition-all duration-300`}
-        >
-          {isLastStep ? "Review Package" : "Next"}
-          {!isLastStep && <ChevronRight className="ml-2 h-4 w-4" />}
-        </Button>
+        <div className="flex gap-2">
+          {!isLastStep && (
+            <Button
+              variant="outline"
+              onClick={() => setCurrentStep(currentStep + 1)}
+              className="text-gray-600 hover:bg-gray-100 border-gray-300"
+            >
+              Skip
+            </Button>
+          )}
+          <Button
+            onClick={handleNext}
+            disabled={!isStepComplete()}
+            className={`${currentColorClasses.bg} ${currentColorClasses.hover} text-white transition-all duration-300`}
+          >
+            {isLastStep ? "Review Package" : "Next"}
+            {!isLastStep && <ChevronRight className="ml-2 h-4 w-4" />}
+          </Button>
+        </div>
       </div>
     </div>
   );
