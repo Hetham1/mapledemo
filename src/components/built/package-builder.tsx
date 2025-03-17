@@ -312,18 +312,19 @@ export default function PackageBuilder() {
                 );
               })}
 
-              <div className="flex justify-between items-center pt-4 p-4 bg-gray-50 rounded-lg">
-                <div>
+              <div className="flex flex-col p-4 bg-gray-50 rounded-lg">
+                <div className="flex justify-between items-center">
                   <h3 className="text-xl font-bold text-black">
                     Total Package Price
                   </h3>
-                  <p className="text-sm text-gray-500">Installation included</p>
-                </div>
-                <div className="flex flex-col justify-end items-end text-right">
                   <p className="text-2xl font-extrabold text-black">
                     ${calculateTotal().toLocaleString()}
                   </p>
-                  <p className="text-sm text-gray-600 font-semibold">
+                </div>
+
+                <div className="flex justify-between items-center mt-2">
+                  <p className="text-sm text-gray-500">Installation included</p>
+                  <p className="text-sm text-gray-600 font-semibold text-right">
                     Financing available at{" "}
                     <span className="text-gray-900 font-bold">
                       ${Math.round(calculateTotal() / 36)}/month
