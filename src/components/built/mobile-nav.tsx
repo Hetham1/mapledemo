@@ -181,7 +181,7 @@ export default function MobileNav({ openChat }: { openChat: () => void }) {
                 </li>
                 <li>
                   <Link
-                    href="/contact"
+                    href="#"
                     className="flex items-center py-2 text-white hover:text-amber-500 transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
@@ -191,7 +191,7 @@ export default function MobileNav({ openChat }: { openChat: () => void }) {
                 </li>
                 <li>
                   <Link
-                    href="/about"
+                    href="#"
                     className="flex items-center py-2 text-white hover:text-amber-500 transition-colors"
                     onClick={() => setIsOpen(false)}
                   >

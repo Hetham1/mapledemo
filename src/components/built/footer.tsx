@@ -16,7 +16,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black text-white">
+    <footer id="footer" className="bg-black text-white">
       {/* Wave SVG Divider */}
       <div className="relative h-16 overflow-hidden">
         <svg
