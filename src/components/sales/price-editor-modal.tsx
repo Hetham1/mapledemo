@@ -320,9 +320,6 @@ export default function PriceEditorModal({
             Reset to Original Prices
           </Button>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
             <Button
               className="bg-amber-600 hover:bg-amber-700"
               onClick={saveChanges}
