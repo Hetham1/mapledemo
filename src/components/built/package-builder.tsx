@@ -319,7 +319,7 @@ export default function PackageBuilder() {
                   </h3>
                   <p className="text-sm text-gray-500">Installation included</p>
                 </div>
-                <div className="flex flex-col justify-end items-end">
+                <div className="flex flex-col justify-end items-end text-right">
                   <p className="text-2xl font-extrabold text-black">
                     ${calculateTotal().toLocaleString()}
                   </p>

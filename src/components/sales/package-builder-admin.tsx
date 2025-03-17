@@ -315,12 +315,12 @@ export default function PackageBuilder({ customPrices }: PackageBuilderProps) {
 
               <div className="flex justify-between items-center pt-4 p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="text-xl font-bold text-amber-600">
+                  <h3 className="text-xl font-bold text-black">
                     Total Package Price
                   </h3>
                   <p className="text-sm text-gray-500">Installation included</p>
                 </div>
-                <div className="flex flex-col justify-end items-end">
+                <div className="flex flex-col justify-end items-end text-right">
                   <p className="text-2xl font-extrabold text-black">
                     ${calculateTotal().toLocaleString()}
                   </p>
