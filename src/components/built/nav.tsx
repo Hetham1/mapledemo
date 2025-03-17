@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -13,8 +12,6 @@ export default function Navbartop() {
 }
 
 function Navbar({ className }: { className?: string }) {
-  const [active, setActive] = useState<string | null>(null);
-  console.log(active);
   return (
     <motion.div
       className={cn(
@@ -26,10 +23,7 @@ function Navbar({ className }: { className?: string }) {
       transition={{ delay: 0, duration: 0.6, ease: "easeInOut" }}
       style={{ originX: 0.5 }}
     >
-      <nav
-        onMouseLeave={() => setActive(null)}
-        className="relative rounded-full border border-white/[0.2] dark:bg-black dark:border-white/[0.2] bg-black shadow-input flex justify-center space-x-4 px-8 py-3"
-      >
+      <nav className="relative rounded-full border border-white/[0.2] dark:bg-black dark:border-white/[0.2] bg-black shadow-input flex justify-center space-x-4 px-8 py-3">
         {/* Direct Link to Home */}
         <Link href="/" className="text-white hover:opacity-90 cursor-pointer">
           Home

@@ -63,7 +63,7 @@ export default function SalesPanel() {
         <Button
           onClick={openPrepackagedEditor}
           className={cn(
-            "bg-amber-600 hover:bg-amber-700 flex items-center gap-2",
+            "bg-blue-600 hover:bg-blue-700 flex items-center gap-2",
             showButtons ? "" : "hidden"
           )}
         >

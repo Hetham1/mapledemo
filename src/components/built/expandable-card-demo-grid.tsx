@@ -27,6 +27,62 @@ interface Card {
 // Card data with added IDs
 const cards: Card[] = [
   {
+    id: "eco-friendly",
+    title: "Eco-Friendly Heat Pump",
+    description: "Energy Star Certified",
+    price: "5,299",
+    financing: "$149/month",
+    sizes: ["Small", "Medium", "Large"],
+    components: ["Heat Pump", "Variable Speed Fan", "Smart Sensor"],
+    src: "/photo_2025-03-03_17-16-37.jpg",
+    svgPaths: [
+      "/sensor-fire-svgrepo-com.svg",
+      "/temperature-svgrepo-com.svg",
+      "/leaf-svgrepo-com (1).svg",
+    ],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
+    ctaText: "Visit",
+    ctaLink: "#",
+    content: () => (
+      <p>
+        A high-performance heat pump system for reduced energy bills and
+        sustainability.
+      </p>
+    ),
+  },
+  {
+    id: "budget-friendly",
+    title: "Budget-Friendly HVAC",
+    description: "3 Year Warranty",
+    price: "2,499",
+    financing: "$79/month",
+    sizes: ["Small", "Medium"],
+    components: [
+      "Basic Thermostat",
+      "Single-Stage Compressor",
+      "Standard Air Filter",
+    ],
+    src: "/MicrosoftTeams-image-17.webp",
+    svgPaths: [
+      "/air-conditioner-heater-svgrepo-com.svg",
+      "/air-svgrepo-com.svg",
+      "/air-filter-svgrepo-com.svg",
+    ],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
+    ctaText: "Visit",
+    ctaLink: "#",
+    content: () => (
+      <p>
+        Affordable and reliable heating and cooling system for budget-conscious
+        homeowners.
+      </p>
+    ),
+  },
+  {
     id: "essential-comfort",
     title: "Essential Comfort Bundle",
     description: "5 Year Warranty",
@@ -35,7 +91,11 @@ const cards: Card[] = [
     sizes: ["Small", "Medium", "Large"],
     components: ["Thermostat", "Air Handler", "Compressor"],
     src: "/photo_2025-03-03_17-16-43.jpg",
-    svgPaths: [],
+    svgPaths: [
+      "/thermometer-svgrepo-com.svg",
+      "/airconditioning-o-svgrepo-com.svg",
+      "/filters-svgrepo-com.svg",
+    ],
     renderImage: function () {
       return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
     },
@@ -61,7 +121,7 @@ const cards: Card[] = [
       "High-Efficiency Filter",
     ],
     src: "/photo_2025-03-03_17-17-03.jpg",
-    svgPaths: ["/thermometer-svgrepo-com.svg", "/Furnace.svg", "/Humid.svg"],
+    svgPaths: ["/thermostat-svgrepo-com.svg", "/Furnace.svg", "/Humid.svg"],
     renderImage: function () {
       return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
     },
@@ -75,28 +135,6 @@ const cards: Card[] = [
     ),
   },
   {
-    id: "eco-friendly",
-    title: "Eco-Friendly Heat Pump",
-    description: "Energy Star Certified",
-    price: "5,299",
-    financing: "$149/month",
-    sizes: ["Small", "Medium", "Large"],
-    components: ["Heat Pump", "Variable Speed Fan", "Smart Sensor"],
-    src: "/photo_2025-03-03_17-16-37.jpg",
-    svgPaths: ["/thermometer-svgrepo-com.svg", "/ac-unit-svgrepo-com.svg"],
-    renderImage: function () {
-      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
-    },
-    ctaText: "Visit",
-    ctaLink: "#",
-    content: () => (
-      <p>
-        A high-performance heat pump system for reduced energy bills and
-        sustainability.
-      </p>
-    ),
-  },
-  {
     id: "ultimate-climate",
     title: "Ultimate Climate Control",
     description: "10 Year Warranty",
@@ -106,7 +144,8 @@ const cards: Card[] = [
     components: ["AI Thermostat", "Zoning System", "Air Purifier"],
     src: "/photo_2025-03-03_17-16-47.jpg",
     svgPaths: [
-      "/thermometer-svgrepo-com.svg",
+      "/air-conditioner-outdoor-svgrepo-com.svg",
+      "/circle-heat-svgrepo-com.svg",
       "/Home Automation & Extras (1).svg",
     ],
     renderImage: function () {
@@ -121,32 +160,7 @@ const cards: Card[] = [
       </p>
     ),
   },
-  {
-    id: "budget-friendly",
-    title: "Budget-Friendly HVAC",
-    description: "3 Year Warranty",
-    price: "2,499",
-    financing: "$79/month",
-    sizes: ["Small", "Medium"],
-    components: [
-      "Basic Thermostat",
-      "Single-Stage Compressor",
-      "Standard Air Filter",
-    ],
-    src: "/MicrosoftTeams-image-17.webp",
-    svgPaths: ["/thermometer-svgrepo-com.svg", "/ac-unit-svgrepo-com.svg"],
-    renderImage: function () {
-      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
-    },
-    ctaText: "Visit",
-    ctaLink: "#",
-    content: () => (
-      <p>
-        Affordable and reliable heating and cooling system for budget-conscious
-        homeowners.
-      </p>
-    ),
-  },
+
   {
     id: "luxury-home",
     title: "Luxury Home Comfort",
@@ -161,8 +175,8 @@ const cards: Card[] = [
     ],
     src: "/61VFBkYfiJL.jpg",
     svgPaths: [
-      "/thermometer-svgrepo-com.svg",
-      "/humid.svg",
+      "/sound-0-svgrepo-com.svg",
+      "/heating-svgrepo-com.svg",
       "Home Automation & Extras (1).svg",
     ],
     renderImage: function () {
