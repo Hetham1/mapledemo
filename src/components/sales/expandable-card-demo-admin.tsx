@@ -2,13 +2,12 @@
 
 import type React from "react";
 
-import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { CloseIcon } from "@/components/built/close-icon";
 import UnifiedForm from "@/components/built/form-demo";
-
+import SvgPackager from "@/components/built/SvgPackager";
 // Define the Card type
 interface Card {
   id: string;
@@ -19,6 +18,8 @@ interface Card {
   sizes: string[];
   components: string[];
   src: string;
+  svgPaths?: string[];
+  renderImage: () => React.ReactNode;
   ctaText: string;
   ctaLink: string;
   content: () => React.ReactNode;
@@ -35,6 +36,14 @@ const originalCards: Card[] = [
     sizes: ["Small", "Medium", "Large"],
     components: ["Thermostat", "Air Handler", "Compressor"],
     src: "/photo_2025-03-03_17-16-43.jpg",
+    svgPaths: [
+      "/sensor-fire-svgrepo-com.svg",
+      "/temperature-svgrepo-com.svg",
+      "/leaf-svgrepo-com (1).svg",
+    ],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -57,6 +66,14 @@ const originalCards: Card[] = [
       "High-Efficiency Filter",
     ],
     src: "/photo_2025-03-03_17-17-03.jpg",
+    svgPaths: [
+      "/air-conditioner-heater-svgrepo-com.svg",
+      "/air-svgrepo-com.svg",
+      "/air-filter-svgrepo-com.svg",
+    ],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -75,6 +92,14 @@ const originalCards: Card[] = [
     sizes: ["Small", "Medium", "Large"],
     components: ["Heat Pump", "Variable Speed Fan", "Smart Sensor"],
     src: "/photo_2025-03-03_17-16-37.jpg",
+    svgPaths: [
+      "/thermometer-svgrepo-com.svg",
+      "/airconditioning-o-svgrepo-com.svg",
+      "/filters-svgrepo-com.svg",
+    ],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -93,6 +118,10 @@ const originalCards: Card[] = [
     sizes: ["Medium", "Large", "Extra Large"],
     components: ["AI Thermostat", "Zoning System", "Air Purifier"],
     src: "/photo_2025-03-03_17-16-47.jpg",
+    svgPaths: ["/thermostat-svgrepo-com.svg", "/Furnace.svg", "/Humid.svg"],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -115,6 +144,14 @@ const originalCards: Card[] = [
       "Standard Air Filter",
     ],
     src: "/MicrosoftTeams-image-17.webp",
+    svgPaths: [
+      "/air-conditioner-outdoor-svgrepo-com.svg",
+      "/circle-heat-svgrepo-com.svg",
+      "/Home Automation & Extras (1).svg",
+    ],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -137,6 +174,14 @@ const originalCards: Card[] = [
       "UV Air Purifier",
     ],
     src: "/61VFBkYfiJL.jpg",
+    svgPaths: [
+      "/sound-0-svgrepo-com.svg",
+      "/heating-svgrepo-com.svg",
+      "Home Automation & Extras (1).svg",
+    ],
+    renderImage: function () {
+      return <SvgPackager svgPaths={this.svgPaths} src={this.src} />;
+    },
     ctaText: "Visit",
     ctaLink: "#",
     content: () => (
@@ -257,14 +302,7 @@ export default function ExpandableCardDemo({
               className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
-                <Image
-                  priority
-                  width={200}
-                  height={200}
-                  src={active.src || "/placeholder.svg?height=200&width=200"}
-                  alt={active.title}
-                  className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
-                />
+                {active.renderImage()}
               </motion.div>
               <div className="p-4 overflow-auto max-h-[300px]">
                 <h3 className="font-semibold text-lg text-neutral-800 dark:text-white">
@@ -343,13 +381,7 @@ export default function ExpandableCardDemo({
           >
             <div className="flex gap-4 flex-col w-full">
               <motion.div layoutId={`image-${card.title}-${id}`}>
-                <Image
-                  width={100}
-                  height={100}
-                  src={card.src || "/placeholder.svg?height=100&width=100"}
-                  alt={card.title}
-                  className="h-60 w-full rounded-lg object-cover object-top"
-                />
+                {card.renderImage()}
               </motion.div>
               <div className="flex justify-center items-center flex-col">
                 <motion.h3
