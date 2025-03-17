@@ -139,7 +139,7 @@ export default function ChatWidget({
       <button
         onClick={handleToggleChat}
         className="fixed bottom-6 right-6 z-[999999999999999999999999999] h-14 w-32 items-center justify-center rounded-full bg-black text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 group animate-subtle-pulse scale-chat-button border hidden md:flex"
-        aria-label="Open chat with Maple Air AI"
+        aria-label="Open chat with MapleAir AI"
       >
         <div className="mt-1">
           <svg

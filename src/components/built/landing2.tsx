@@ -6,7 +6,7 @@ export default function WavyBackgroundDemo() {
     <WavyBackground className="max-w-4xl mx-auto pb-40">
       <div className="flex justify-center items-end">
         <p className="text-4xl md:text-4xl lg:text-7xl text-white font-bold inter-var text-center mr-1">
-          Maple Air
+          MapleAir
         </p>
         <span className="text-sm lg:text-2xl text-gray-200 font-semibold inter-var">
           inc.
