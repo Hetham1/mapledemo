@@ -4,7 +4,7 @@ export default function Prepack() {
   return (
     <div
       id="pre-package"
-      className="min-h-screen w-full flex flex-col p-4 justify-center bg-hesam-white"
+      className="min-h-screen w-full flex flex-col p-4 justify-center bg-hesam-white pt-20"
     >
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4 text-amber-700">
