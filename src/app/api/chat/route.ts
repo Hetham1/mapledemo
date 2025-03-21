@@ -112,7 +112,6 @@ export async function POST(req: Request) {
         model: "meta-llama/Llama-3.2-3B-Instruct",
         messages: formattedMessages,
         max_tokens: 1024,
-        format: "markdown",
       });
 
       return Response.json({
