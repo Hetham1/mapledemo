@@ -1,6 +1,6 @@
 // app/api/send-email/route.ts
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 // Initialize with your API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -48,37 +48,55 @@ interface EmailRequestBody {
 export async function POST(request: Request) {
   try {
     const body: EmailRequestBody = await request.json();
-    
+
     // Format the email content based on form type
     const formatEmailContent = (): string => {
-      if (body.formType === 'package' && body.packageData) {
+      if (body.formType === "package" && body.packageData) {
         return `
           <h2>Package Quote Request</h2>
           <h3>Package Details:</h3>
           <p><strong>Package:</strong> ${body.packageData.title}</p>
           <p><strong>Price:</strong> $${body.packageData.price}</p>
-          ${body.formData.selectedSize ? `<p><strong>Selected Size:</strong> ${body.formData.selectedSize}</p>` : ''}
-          ${body.packageData.description ? `<p><strong>Description:</strong> ${body.packageData.description}</p>` : ''}
+          ${
+            body.formData.selectedSize
+              ? `<p><strong>Selected Size:</strong> ${body.formData.selectedSize}</p>`
+              : ""
+          }
+          ${
+            body.packageData.description
+              ? `<p><strong>Description:</strong> ${body.packageData.description}</p>`
+              : ""
+          }
           
-          ${body.packageData.components ? `
+          ${
+            body.packageData.components
+              ? `
             <h4>Components:</h4>
             <ul>
-              ${body.packageData.components.map((component: string) => `<li>${component}</li>`).join('')}
+              ${body.packageData.components
+                .map((component: string) => `<li>${component}</li>`)
+                .join("")}
             </ul>
-          ` : ''}
+          `
+              : ""
+          }
         `;
       } else {
         return `
           <h2>Custom Quote Request</h2>
           <h3>Selected Items:</h3>
           <ul>
-            ${body.selectedItems.map((item: SelectedItem) => `
+            ${body.selectedItems
+              .map(
+                (item: SelectedItem) => `
               <li>
                 <p><strong>${item.title}</strong> - $${item.price}</p>
-                <p>${item.category ? `Category: ${item.category}` : ''}</p>
-                <p>${item.description ? item.description : ''}</p>
+                <p>${item.category ? `Category: ${item.category}` : ""}</p>
+                <p>${item.description ? item.description : ""}</p>
               </li>
-            `).join('')}
+            `
+              )
+              .join("")}
           </ul>
           <p><strong>Estimated Total:</strong> $${body.estimatedTotal.toLocaleString()}</p>
         `;
@@ -94,11 +112,15 @@ export async function POST(request: Request) {
         <p><strong>Email:</strong> ${body.formData.email}</p>
         <p><strong>Phone:</strong> ${body.formData.phone}</p>
         <p><strong>Address:</strong> ${body.formData.address}</p>
-        <p><strong>Preferred Installation Date:</strong> ${body.formData.installationDate || 'Not specified'}</p>
-        <p><strong>Additional Notes:</strong> ${body.formData.additionalNotes || 'None'}</p>
+        <p><strong>Preferred Installation Date:</strong> ${
+          body.formData.installationDate || "Not specified"
+        }</p>
+        <p><strong>Additional Notes:</strong> ${
+          body.formData.additionalNotes || "None"
+        }</p>
       </div>
     `;
-    
+
     // Type for Resend API response
     type ResendResponse = {
       data: { id: string } | null;
@@ -106,11 +128,16 @@ export async function POST(request: Request) {
     };
 
     const { data, error }: ResendResponse = await resend.emails.send({
-      from: 'onboarding@resend.dev', // Initially use this, later you can use a verified domain
-      to: 'hesammoradizadeh2002@gmail.com',
-      subject: body.formType === 'package' && body.packageData
-        ? `Package Quote Request: ${body.packageData.title}` 
-        : 'Custom Quote Request',
+      from: `MapleAir <MapleAirservice@xikode.lol>`, // Initially use this, later you can use a verified domain
+      to: [
+        "hesammoradizadeh2002@gmail.com",
+        "amirezanmt@gmail.com",
+        "sphr.mosafa@gmail.com",
+      ],
+      subject:
+        body.formType === "package" && body.packageData
+          ? `Package Quote Request: ${body.packageData.title}`
+          : "Custom Quote Request",
       html: htmlContent,
       replyTo: body.formData.email, // So you can reply directly to the customer
     });
@@ -119,14 +146,17 @@ export async function POST(request: Request) {
       throw new Error(error.message);
     }
 
-    return NextResponse.json(
-      { success: true, id: data?.id },
-      { status: 200 }
-    );
+    return NextResponse.json({ success: true, id: data?.id }, { status: 200 });
   } catch (error) {
-    console.error('Error sending email:', error instanceof Error ? error.message : 'Unknown error');
+    console.error(
+      "Error sending email:",
+      error instanceof Error ? error.message : "Unknown error"
+    );
     return NextResponse.json(
-      { success: false, error: error instanceof Error ? error.message : 'Failed to send email' },
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to send email",
+      },
       { status: 500 }
     );
   }
