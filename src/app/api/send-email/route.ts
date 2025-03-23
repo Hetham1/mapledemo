@@ -129,7 +129,11 @@ export async function POST(request: Request) {
 
     const { data, error }: ResendResponse = await resend.emails.send({
       from: `MapleAir <MapleAirservice@xikode.lol>`, // Initially use this, later you can use a verified domain
-      to: ["hesammoradizadeh2002@gmail.com", "amirezanmt@gmail.com"],
+      to: [
+        "hesammoradizadeh2002@gmail.com",
+        "amirezanmt@gmail.com",
+        "sphr.mosafa@gmail.com",
+      ],
       subject:
         body.formType === "package" && body.packageData
           ? `Package Quote Request: ${body.packageData.title}`
