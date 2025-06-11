@@ -132,7 +132,6 @@ export async function POST(request: Request) {
       to: [
         "hesammoradizadeh2002@gmail.com",
         "amirezanmt@gmail.com",
-        "sphr.mosafa@gmail.com",
       ],
       subject:
         body.formType === "package" && body.packageData
